@@ -88,7 +88,7 @@
                                 ],
                                 "deployment": {
                                     "location": {
-                                        "value": "[parameters('location')]"
+                                        "value": "australiaeast"
                                     },
                                     "properties": {
                                         "mode": "incremental",
@@ -96,6 +96,9 @@
                                             "rgName": {
                                                 "value": "[parameters('rgName')]"
                                             },
+                                            "location": {
+                                                "value": "[parameters('location')]"
+                                            },                                            
                                             "hubVnetAddressSpace": {
                                                 "value": "[parameters('hubVnetAddressSpace')]"
                                             },
@@ -116,6 +119,9 @@
                                                 "rgName": {
                                                     "type": "string"
                                                 },
+                                                "location": {
+                                                    "type": "string"
+                                                },                                                
                                                 "hubVnetAddressSpace": {
                                                     "type": "string"
                                                 },
