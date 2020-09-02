@@ -79,14 +79,24 @@
                         "then": {
                             "effect": "deployIfNotExists",
                             "details": {
-                                "type": "Microsoft.Network/virtualNetworks",
+                                "type": "Microsoft.Resources/resourceGroups",
                                 "deploymentScope": "Subscription",
-                                "existenceScope": "ResourceGroup",
-                                "name": "[concat('vnet-', parameters('location'), '-hub')]",
-                                "resourceGroupName": "[parameters('rgName')]",
+                                "existenceScope": "Subscription",
                                 "roleDefinitionIds": [
-                                    "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+                                    "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
                                 ],
+                                "existenceCondition": {
+                                    "allOf": [
+                                        {
+                                            "field": "type",
+                                            "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+                                        },
+                                        {
+                                            "field": "name",
+                                            "like": "[concat(subscription().displayName, '-network')]"
+                                        }
+                                    ]
+                                },
                                 "deployment": {
                                     "location": "australiaeast",
                                     "properties": {
@@ -97,7 +107,7 @@
                                             },
                                             "location": {
                                                 "value": "[parameters('location')]"
-                                            },                                            
+                                            },
                                             "hubVnetAddressSpace": {
                                                 "value": "[parameters('hubVnetAddressSpace')]"
                                             },
@@ -106,10 +116,10 @@
                                             },
                                             "azureGatewaySubnetAddressSpace": {
                                                 "value": "[parameters('azureGatewaySubnetAddressSpace')]"
-                                            },    
+                                            },
                                             "azureBastionSubnetAddressSpace": {
                                                 "value": "[parameters('azureBastionSubnetAddressSpace')]"
-                                            }                                                                                                                    
+                                            }
                                         },
                                         "template": {
                                             "$schema": "http://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
@@ -120,7 +130,7 @@
                                                 },
                                                 "location": {
                                                     "type": "string"
-                                                },                                                
+                                                },
                                                 "hubVnetAddressSpace": {
                                                     "type": "string"
                                                 },
@@ -132,7 +142,7 @@
                                                 },
                                                 "azureBastionSubnetAddressSpace": {
                                                     "type": "string"
-                                                }                                                                                                
+                                                }
                                             },
                                             "variables": {
                                                 "defaultFwPipName": "[concat('pip-fw-', parameters('location'), '-default')]",
@@ -190,16 +200,14 @@
                                                                                 "name": "GatewaySubnet",
                                                                                 "properties": {
                                                                                     "addressPrefix": "[parameters('azureGatewaySubnetAddressSpace')]",
-                                                                                    "serviceEndpoints": [
-                                                                                    ]
+                                                                                    "serviceEndpoints": []
                                                                                 }
                                                                             },
                                                                             {
                                                                                 "name": "AzureBastionSubnet",
                                                                                 "properties": {
                                                                                     "addressPrefix": "[parameters('azureBastionSubnetAddressSpace')]",
-                                                                                    "serviceEndpoints": [
-                                                                                    ]
+                                                                                    "serviceEndpoints": []
                                                                                 }
                                                                             }
                                                                         ],
@@ -254,8 +262,7 @@
                                                                                 }
                                                                             }
                                                                         ],
-                                                                        "natRuleCollections": [
-                                                                        ],
+                                                                        "natRuleCollections": [],
                                                                         "networkRuleCollections": [
                                                                             {
                                                                                 "name": "org-wide-allowed",
@@ -316,9 +323,7 @@
                                                                                 }
                                                                             }
                                                                         ],
-                                                                        "applicationRuleCollections": [
-                                                        
-                                                                        ]
+                                                                        "applicationRuleCollections": []
                                                                     }
                                                                 },
                                                                 {
@@ -386,7 +391,7 @@
                                                                 "hubVnetId": {
                                                                     "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]",
                                                                     "type": "string"
-                                                                }                                                                
+                                                                }
                                                             }
                                                         }
                                                     }
