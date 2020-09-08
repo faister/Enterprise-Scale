@@ -1,0 +1,348 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Name": "Deploy-NetworkingHub",
+        "ResourceType": "Microsoft.Authorization/policyDefinitions",
+        "SubscriptionId": null,
+        "Properties": {
+          "Description": "Deploy-NetworkingHub",
+          "DisplayName": "Deploy-NetworkingHub",
+          "Mode": "All",
+          "Parameters": {
+            "rgName": {
+              "type": "String",
+              "metadata": {
+                "displayName": "rgName",
+                "description": "Provide name for resource group."
+              }
+            },
+            "rgRegion": {
+              "type": "string",
+              "allowedValues": [
+                "centralus",
+                "eastus",
+                "eastus2",
+                "westus2",
+                "francecentral",
+                "northeurope",
+                "uksouth",
+                "westeurope",
+                "japaneast",
+                "southeastasia",
+                "australiaeast"
+              ],
+              "metadata": {
+                "description": "The hub's regional affinity. All resources tied to this hub will also be homed in this region.  The network team maintains this approved regional list which is a subset of zones with Availability Zone support."
+              }
+            }
+          },
+          "PolicyRule": {
+            "if": {
+              "allOf": [
+                {
+                  "field": "type",
+                  "equals": "Microsoft.Resources/subscriptions"
+                }
+              ]
+            },
+            "then": {
+              "effect": "deployIfNotExists",
+              "details": {
+                "type": "Microsoft.Resources/resourceGroups",
+                "deploymentScope": "Subscription",
+                "existenceScope": "Subscription",
+                "roleDefinitionIds": [
+                  "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+                ],
+                "existenceCondition": {
+                  "allOf": [
+                    {
+                      "field": "type",
+                      "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+                    },
+                    {
+                      "field": "name",
+                      "like": "[concat('vnet-', parameters('rgRegion'), '-hub')]"
+                    }
+                  ]
+                },
+                "deployment": {
+                  "location": "australiaeast",
+                  "properties": {
+                    "mode": "incremental",
+                    "parameters": {
+                      "rgName": {
+                        "value": "[parameters('rgName')]"
+                      },
+                      "rgRegion": {
+                        "value": "[parameters('rgRegion')]"
+                      }                      
+                    },
+                    "template": {
+                      "$schema": "http://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
+                      "contentVersion": "1.0.0.0",
+                      "parameters": {
+                        "rgName": {
+                          "type": "string"
+                        },
+                        "rgRegion": {
+                          "type": "string"
+                        },                        
+                        "hubVnetAddressSpace": {
+                          "defaultValue": "10.200.0.0/24",
+                          "type": "string"                          
+                        },
+                        "azureFirewallSubnetAddressSpace": {
+                          "defaultValue": "10.200.0.0/26",
+                          "type": "string"
+                        },
+                        "azureGatewaySubnetAddressSpace": {
+                          "defaultValue": "10.200.0.64/27",
+                          "type": "string"                          
+                        },
+                        "azureBastionSubnetAddressSpace": {
+                          "defaultValue": "10.200.0.96/27",
+                          "type": "string"                          
+                        }
+                      },
+                      "variables": {
+                        "defaultFwPipName": "[concat('pip-fw-', parameters('rgRegion'), '-default')]",
+                        "hubFwName": "[concat('fw-', parameters('rgRegion'), '-hub')]",
+                        "hubVNetName": "[concat('vnet-', parameters('rgRegion'), '-hub')]",
+                        "hubLaName": "[concat('la-networking-hub-', parameters('rgRegion'),'-',uniqueString(resourceId('Microsoft.Network/virtualNetworks',variables('hubVnetName'))))]"
+                      },
+                      "resources": [
+                        {
+                          "type": "Microsoft.Network/virtualNetworks",
+                          "apiVersion": "2019-11-01",
+                          "name": "[variables('hubVnetName')]",
+                          "location": "[parameters('rgRegion')]",
+                          "properties": {
+                            "addressSpace": {
+                              "addressPrefixes": [
+                                "[parameters('hubVnetAddressSpace')]"
+                              ]
+                            },
+                            "subnets": [
+                              {
+                                "name": "AzureFirewallSubnet",
+                                "properties": {
+                                  "addressPrefix": "[parameters('azureFirewallSubnetAddressSpace')]",
+                                  "serviceEndpoints": [
+                                    {
+                                      "service": "Microsoft.KeyVault"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "name": "GatewaySubnet",
+                                "properties": {
+                                  "addressPrefix": "[parameters('azureGatewaySubnetAddressSpace')]",
+                                  "serviceEndpoints": []
+                                }
+                              },
+                              {
+                                "name": "AzureBastionSubnet",
+                                "properties": {
+                                  "addressPrefix": "[parameters('azureBastionSubnetAddressSpace')]",
+                                  "serviceEndpoints": []
+                                }
+                              }
+                            ],
+                            "enableDdosProtection": false,
+                            "enableVmProtection": false
+                          }
+                        },
+                        {
+                          "apiVersion": "2019-11-01",
+                          "type": "Microsoft.Network/publicIpAddresses",
+                          "name": "[variables('defaultFwPipName')]",
+                          "location": "[parameters('rgRegion')]",
+                          "sku": {
+                            "name": "Standard"
+                          },
+                          "properties": {
+                            "publicIPAllocationMethod": "Static",
+                            "idleTimeoutInMinutes": 4,
+                            "publicIPAddressVersion": "IPv4"
+                          }
+                        },
+                        {
+                          "type": "Microsoft.Network/azureFirewalls",
+                          "apiVersion": "2019-11-01",
+                          "name": "[variables('hubFwName')]",
+                          "location": "[parameters('rgRegion')]",
+                          "zones": [
+                            "1",
+                            "2",
+                            "3"
+                          ],
+                          "dependsOn": [
+                            "[resourceId('Microsoft.Network/publicIpAddresses', variables('defaultFwPipName'))]",
+                            "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]"
+                          ],
+                          "properties": {
+                            "sku": {
+                              "name": "AZFW_VNet",
+                              "tier": "Standard"
+                            },
+                            "threatIntelMode": "Alert",
+                            "ipConfigurations": [
+                              {
+                                "name": "[variables('defaultFwPipName')]",
+                                "properties": {
+                                  "subnet": {
+                                    "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('hubVnetName'), 'AzureFirewallSubnet')]"
+                                  },
+                                  "publicIPAddress": {
+                                    "id": "[resourceId('Microsoft.Network/publicIpAddresses', variables('defaultFwPipName'))]"
+                                  }
+                                }
+                              }
+                            ],
+                            "natRuleCollections": [],
+                            "networkRuleCollections": [
+                              {
+                                "name": "org-wide-allowed",
+                                "properties": {
+                                  "action": {
+                                    "type": "Allow"
+                                  },
+                                  "priority": 100,
+                                  "rules": [
+                                    {
+                                      "name": "DNS",
+                                      "sourceAddresses": [
+                                        "*"
+                                      ],
+                                      "protocols": [
+                                        "UDP"
+                                      ],
+                                      "destinationAddresses": [
+                                        "*"
+                                      ],
+                                      "destinationPorts": [
+                                        "53"
+                                      ]
+                                    },
+                                    {
+                                      "name": "ntp",
+                                      "description": "Network Time Protocol (NTP) time synchronization",
+                                      "sourceAddresses": [
+                                        "*"
+                                      ],
+                                      "protocols": [
+                                        "UDP"
+                                      ],
+                                      "destinationPorts": [
+                                        "123"
+                                      ],
+                                      "destinationAddresses": [
+                                        "*"
+                                      ]
+                                    },
+                                    {
+                                      "name": "HTTP-and-HTTPS",
+                                      "sourceAddresses": [
+                                        "*"
+                                      ],
+                                      "protocols": [
+                                        "TCP"
+                                      ],
+                                      "destinationPorts": [
+                                        "80",
+                                        "443"
+                                      ],
+                                      "destinationAddresses": [
+                                        "*"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              }
+                            ],
+                            "applicationRuleCollections": []
+                          }
+                        },
+                        {
+                          "type": "Microsoft.OperationalInsights/workspaces",
+                          "apiVersion": "2015-11-01-preview",
+                          "name": "[variables('hubLaName')]",
+                          "location": "[parameters('rgRegion')]",
+                          "properties": {
+                            "sku": {
+                              "name": "PerGB2018"
+                            },
+                            "retentionInDays": 30
+                          }
+                        },
+                        {
+                          "type": "Microsoft.Network/azureFirewalls/providers/diagnosticSettings",
+                          "apiVersion": "2017-05-01-preview",
+                          "name": "[concat(variables('hubFwName'), '/Microsoft.Insights/default')]",
+                          "location": "[parameters('rgRegion')]",
+                          "dependsOn": [
+                            "[resourceId('Microsoft.OperationalInsights/workspaces', variables('hubLaName'))]",
+                            "[resourceId('Microsoft.Network/azureFirewalls', variables('hubFwName'))]"
+                          ],
+                          "properties": {
+                            "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('hubLaName'))]",
+                            "logs": [
+                              {
+                                "category": "AzureFirewallApplicationRule",
+                                "enabled": true
+                              },
+                              {
+                                "category": "AzureFirewallNetworkRule",
+                                "enabled": true
+                              }
+                            ],
+                            "metrics": [
+                              {
+                                "category": "AllMetrics",
+                                "enabled": true
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "Microsoft.Network/virtualNetworks/providers/diagnosticSettings",
+                          "apiVersion": "2017-05-01-preview",
+                          "name": "[concat(variables('hubVnetName'), '/Microsoft.Insights/default')]",
+                          "location": "[parameters('rgRegion')]",
+                          "dependsOn": [
+                            "[resourceId('Microsoft.OperationalInsights/workspaces', variables('hubLaName'))]",
+                            "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]"
+                          ],
+                          "properties": {
+                            "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('hubLaName'))]",
+                            "metrics": [
+                              {
+                                "category": "AllMetrics",
+                                "enabled": true
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "outputs": {
+                        "hubVnetId": {
+                          "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
