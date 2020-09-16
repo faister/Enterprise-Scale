@@ -91,8 +91,8 @@
                         },
                         {
                           "type": "Microsoft.Resources/deployments",
-                          "apiVersion": "2018-05-01",
-                          "name": "hubvnet",
+                          "apiVersion": "2020-06-01",
+                          "name": "hub-vnet",
                           "resourceGroup": "[parameters('rgName')]",
                           "dependsOn": [
                             "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
@@ -100,7 +100,7 @@
                           "properties": {
                             "mode": "Incremental",
                             "template": {
-                              "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+                              "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
                               "contentVersion": "1.0.0.0",
                               "parameters": {},
                               "resources": [
@@ -159,7 +159,29 @@
                                     "idleTimeoutInMinutes": 4,
                                     "publicIPAddressVersion": "IPv4"
                                   }
-                                },
+                                }
+                              ],
+                              "outputs": {}
+                            }
+                          }
+                        },
+                        {
+                          "type": "Microsoft.Resources/deployments",
+                          "apiVersion": "2020-06-01",
+                          "resourceGroup": "[parameters('rgName')]",
+                          "dependsOn": [
+                            "[resourceId('Microsoft.Network/publicIpAddresses', variables('defaultFwPipName'))]",
+                            "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]"
+                          ],
+                          "name": "hub-firewall",
+                          "properties": {
+                            "mode": "Incremental",
+                            "template": {
+                              "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                              "contentVersion": "1.0.0.0",
+                              "parameters": {},
+                              "variables": {},
+                              "resources": [
                                 {
                                   "type": "Microsoft.Network/azureFirewalls",
                                   "apiVersion": "2019-11-01",
@@ -169,10 +191,6 @@
                                     "1",
                                     "2",
                                     "3"
-                                  ],
-                                  "dependsOn": [
-                                    "[resourceId('Microsoft.Network/publicIpAddresses', variables('defaultFwPipName'))]",
-                                    "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]"
                                   ],
                                   "properties": {
                                     "sku": {
@@ -257,8 +275,8 @@
                                     "applicationRuleCollections": []
                                   }
                                 }
-                              ],
-                              "outputs": {}
+                                
+                              ]
                             }
                           }
                         }
