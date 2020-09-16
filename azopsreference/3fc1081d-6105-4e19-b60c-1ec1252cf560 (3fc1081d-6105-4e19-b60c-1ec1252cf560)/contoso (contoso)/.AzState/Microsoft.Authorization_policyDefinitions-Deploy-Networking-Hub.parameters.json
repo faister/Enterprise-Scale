@@ -77,9 +77,9 @@
                         "azureFirewallSubnetAddressSpace": "10.200.0.0/26",
                         "azureGatewaySubnetAddressSpace": "10.200.0.64/27",
                         "azureBastionSubnetAddressSpace": "10.200.0.96/27",
-                        "defaultFwPipName": "[concat('pip-fw-', parameters('location'), '-default')]",
-                        "hubFwName": "[concat('fw-', parameters('location'), '-hub')]",
-                        "hubLaName": "[concat('la-networking-hub-', parameters('location'),'-',uniqueString(resourceId('Microsoft.Network/virtualNetworks',variables('hubVnetName'))))]"                        
+                        "defaultFwPipName": "[concat('pip-fw-', parameters('rgRegion'), '-default')]",
+                        "hubFwName": "[concat('fw-', parameters('rgRegion'), '-hub')]",
+                        "hubLaName": "[concat('la-networking-hub-', parameters('rgRegion'),'-',uniqueString(resourceId('Microsoft.Network/virtualNetworks',variables('hubVnetName'))))]"                        
                       },
                       "resources": [
                         {
@@ -150,7 +150,7 @@
                                   "apiVersion": "2019-11-01",
                                   "type": "Microsoft.Network/publicIpAddresses",
                                   "name": "[variables('defaultFwPipName')]",
-                                  "location": "[parameters('location')]",
+                                  "location": "[parameters('rgRegion')]",
                                   "sku": {
                                     "name": "Standard"
                                   },
