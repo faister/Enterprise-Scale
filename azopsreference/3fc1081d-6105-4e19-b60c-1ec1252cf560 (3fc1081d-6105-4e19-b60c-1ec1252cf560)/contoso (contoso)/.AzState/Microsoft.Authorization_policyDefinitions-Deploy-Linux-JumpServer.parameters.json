@@ -91,7 +91,7 @@
                 "type": "Microsoft.Network/virtualWans",
                 "deploymentScope": "Subscription",
                 "existenceScope": "ResourceGroup",
-                "name": "[parameters('vnetname')]",
+                "name": "[parameters('vnet-name')]",
                 "resourceGroupName": "[parameters('rgName')]",
                 "roleDefinitionIds": [
                   "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
@@ -107,8 +107,8 @@
                       "location": {
                         "value": "[parameters('location')]"
                       },
-                      "vnetname": {
-                        "value": "[parameters('vnetname')]"
+                      "vnet-name": {
+                        "value": "[parameters('vnet-name')]"
                       }                      
                     },
                     "template": {
