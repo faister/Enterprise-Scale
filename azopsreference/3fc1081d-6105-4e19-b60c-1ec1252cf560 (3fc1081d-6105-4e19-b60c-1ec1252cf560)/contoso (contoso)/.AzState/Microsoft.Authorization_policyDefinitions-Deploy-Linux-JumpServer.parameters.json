@@ -91,7 +91,7 @@
                 "type": "Microsoft.Network/virtualWans",
                 "deploymentScope": "Subscription",
                 "existenceScope": "ResourceGroup",
-                "name": "[parameters('vwanname')]",
+                "name": "[parameters('vnetname')]",
                 "resourceGroupName": "[parameters('rgName')]",
                 "roleDefinitionIds": [
                   "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
@@ -106,7 +106,10 @@
                       },
                       "location": {
                         "value": "[parameters('location')]"
-                      }
+                      },
+                      "vnetname": {
+                        "value": "[parameters('vnetname')]"
+                      }                      
                     },
                     "template": {
                       "$schema": "http://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
@@ -115,10 +118,10 @@
                         "rgName": {
                           "type": "string"
                         },
-                        "vwanname": {
+                        "vnet-name": {
                           "type": "string"
                         },
-                        "vwanRegion": {
+                        "location": {
                           "type": "string"
                         }
                       },
@@ -136,7 +139,7 @@
                         {
                           "type": "Microsoft.Resources/deployments",
                           "apiVersion": "2018-05-01",
-                          "name": "vwan",
+                          "name": "ISM-Control-1387-R1-Deploy-Linux-JumpServer",
                           "resourceGroup": "[parameters('rgName')]",
                           "dependsOn": [
                             "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
@@ -151,8 +154,8 @@
                                 {
                                   "type": "Microsoft.Network/virtualWans",
                                   "apiVersion": "2020-05-01",
-                                  "location": "[parameters('vwanRegion')]",
-                                  "name": "[parameters('vwanname')]",
+                                  "location": "[parameters('location')]",
+                                  "name": "[parameters('vnet-name')]",
                                   "properties": {
                                     "virtualHubs": [],
                                     "vpnSites": [],
