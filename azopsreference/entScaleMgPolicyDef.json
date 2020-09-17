@@ -103,6 +103,7 @@
         "policyUri": "[uri(deployment().properties.templateLink.uri, '3fc1081d-6105-4e19-b60c-1ec1252cf560%20(3fc1081d-6105-4e19-b60c-1ec1252cf560)/contoso%20(contoso)/.AzState/')]",
         "templateUri": "https://raw.githubusercontent.com/Azure/AzOps/main/template/template.json",
         "policyMap": {
+            "ISM-Control-1384-R2-Audit-Account-Owner-MFA": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Audit-Account-Owner-MFA.parameters.json')]",
             "Append Key Vault soft delete": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Append-KV-SoftDelete.parameters.json')]",
             "Deny App GW without WAF": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deny-AppGW-Without-WAF.parameters.json')]",
             "Deny ER peering": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deny-ERPeering.parameters.json')]",

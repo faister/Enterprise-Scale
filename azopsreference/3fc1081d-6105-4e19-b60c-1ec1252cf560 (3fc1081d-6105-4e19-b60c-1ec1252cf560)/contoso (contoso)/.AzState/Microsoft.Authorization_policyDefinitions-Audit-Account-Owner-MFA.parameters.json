@@ -1,0 +1,51 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Name": "ISM-Control-1384-R2-Audit-Account-Owner-MFA",
+        "ResourceType": "Microsoft.Authorization/policyDefinitions",
+        "SubscriptionId": null,
+        "Properties": {
+          "Description": "Multi-factor authentication is used to authenticate users each time they perform privileged actions.",
+          "DisplayName": "ISM-Control-1384-R2-Audit-Account-Owner-MFA",
+          "Mode": "All",
+          "Parameters": {
+            "effect": {
+              "type": "String",
+              "metadata": {
+                "displayName": "Effect",
+                "description": "Enable or disable the execution of the policy"
+              },
+              "allowedValues": [
+                "AuditIfNotExists",
+                "Disabled"
+              ],
+              "defaultValue": "AuditIfNotExists"
+            }            
+          },
+          "PolicyRule": {
+            "if": {
+              "field": "type",
+              "equals": "Microsoft.Resources/subscriptions"
+            },
+            "then": {
+              "effect": "[parameters('effect')]",
+              "details": {
+                "type": "Microsoft.Security/assessments",
+                "name": "94290b00-4d0c-d7b4-7cea-064a9554e681",
+                "existenceCondition": {
+                  "field": "Microsoft.Security/assessments/status.code",
+                  "in": [
+                    "Healthy"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
