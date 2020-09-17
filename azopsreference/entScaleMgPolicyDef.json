@@ -11,6 +11,7 @@
         "policyDefinition": {
             "type": "string",
             "allowedValues": [
+                "ISM-Control-1384-R2-Audit-Account-Owner-MFA",
                 "Append Key Vault soft delete",
                 "Deny App GW without WAF",
                 "Deny ER peering",
