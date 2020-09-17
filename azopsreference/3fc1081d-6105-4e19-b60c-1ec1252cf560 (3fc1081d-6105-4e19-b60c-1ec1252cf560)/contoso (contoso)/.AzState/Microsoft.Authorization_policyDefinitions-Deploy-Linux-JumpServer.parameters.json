@@ -63,14 +63,14 @@
               }
             },
             "adminPasswordOrKey": {
-              "type": "securestring",
+              "type": "string",
               "metadata": {
-                "description": "SSH Key or password for the Virtual Machine. SSH key is recommended."
+                "description": "SSH Key or password for the Virtual Machine. SSH key is recommended. Please change thereafter."
               }
             },
             "vnet-name": {
               "type": "string",
-              "defaultValue": "vnet01",
+              "defaultValue": "vnet-australiaeast-hub",
               "metadata": {
                   "description": "Name of new or existing vnet to which JumpServer should be deployed"
               }
