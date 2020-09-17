@@ -1,0 +1,179 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Name": "ISM-Control-1387-R1-Deploy-Linux-JumpServer",
+        "ResourceType": "Microsoft.Authorization/policyDefinitions",
+        "SubscriptionId": null,
+        "Properties": {
+          "Description": "Security Control: 1387; Revision: 1; Updated: Sep-18; Applicability: O, P, S, TS; Priority: Should. All administrative actions are conducted through a jump server.",
+          "DisplayName": "ISM-Control-1387-R1-Deploy-JumpServer",
+          "Mode": "All",
+          "Parameters": {
+            "rgName": {
+              "type": "String",
+              "metadata": {
+                "displayName": "rgName",
+                "description": "Provide name for resource group which contains the hub VNET and AzureBastionSubnet"
+              }
+            },
+            "location": {
+              "type": "String",
+              "metadata": {
+                "displayName": "location",
+                "description": "Select Azure region for the JumpBox",
+                "strongType": "location"
+              }
+            },
+            "vmSku": {
+              "type": "string",
+              "defaultValue": "Standard_A1",
+              "metadata": {
+                "description": "Size of VMs in the VM Scale Set."
+              }
+            },
+            "ubuntuOSVersion": {
+              "type": "string",
+              "defaultValue": "14.04.4-LTS",
+              "allowedValues": [
+                "16.04-LTS",
+                "14.04.4-LTS"
+              ],
+              "metadata": {
+                "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version. Allowed values are: 16.04-LTS, 14.04.4-LTS."
+              }
+            },
+            "adminUsername": {
+              "type": "string",
+              "metadata": {
+                "description": "Admin username on the Linux JumpServer."
+              }
+            },
+            "authenticationType": {
+              "type": "string",
+              "defaultValue": "sshPublicKey",
+              "allowedValues": [
+                "sshPublicKey",
+                "password"
+              ],
+              "metadata": {
+                "description": "Type of authentication to use on the Virtual Machine. SSH key is recommended."
+              }
+            },
+            "adminPasswordOrKey": {
+              "type": "securestring",
+              "metadata": {
+                "description": "SSH Key or password for the Virtual Machine. SSH key is recommended."
+              }
+            },
+            "vnet-name": {
+              "type": "string",
+              "defaultValue": "vnet01",
+              "metadata": {
+                  "description": "Name of new or existing vnet to which JumpServer should be deployed"
+              }
+            }                      
+          },
+          "PolicyRule": {
+            "if": {
+              "allOf": [
+                {
+                  "field": "type",
+                  "equals": "Microsoft.Resources/subscriptions"
+                }
+              ]
+            },
+            "then": {
+              "effect": "deployIfNotExists",
+              "details": {
+                "type": "Microsoft.Network/virtualWans",
+                "deploymentScope": "Subscription",
+                "existenceScope": "ResourceGroup",
+                "name": "[parameters('vwanname')]",
+                "resourceGroupName": "[parameters('rgName')]",
+                "roleDefinitionIds": [
+                  "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+                ],
+                "deployment": {
+                  "location": "northeurope",
+                  "properties": {
+                    "mode": "incremental",
+                    "parameters": {
+                      "rgName": {
+                        "value": "[parameters('rgName')]"
+                      },
+                      "location": {
+                        "value": "[parameters('location')]"
+                      }
+                    },
+                    "template": {
+                      "$schema": "http://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
+                      "contentVersion": "1.0.0.0",
+                      "parameters": {
+                        "rgName": {
+                          "type": "string"
+                        },
+                        "vwanname": {
+                          "type": "string"
+                        },
+                        "vwanRegion": {
+                          "type": "string"
+                        }
+                      },
+                      "variables": {
+                        "vwansku": "Standard"
+                      },
+                      "resources": [
+                        {
+                          "type": "Microsoft.Resources/resourceGroups",
+                          "apiVersion": "2018-05-01",
+                          "name": "[parameters('rgName')]",
+                          "location": "[parameters('location')]",
+                          "properties": {}
+                        },
+                        {
+                          "type": "Microsoft.Resources/deployments",
+                          "apiVersion": "2018-05-01",
+                          "name": "vwan",
+                          "resourceGroup": "[parameters('rgName')]",
+                          "dependsOn": [
+                            "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+                          ],
+                          "properties": {
+                            "mode": "Incremental",
+                            "template": {
+                              "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+                              "contentVersion": "1.0.0.0",
+                              "parameters": {},
+                              "resources": [
+                                {
+                                  "type": "Microsoft.Network/virtualWans",
+                                  "apiVersion": "2020-05-01",
+                                  "location": "[parameters('vwanRegion')]",
+                                  "name": "[parameters('vwanname')]",
+                                  "properties": {
+                                    "virtualHubs": [],
+                                    "vpnSites": [],
+                                    "type": "[variables('vwansku')]"
+                                  }
+                                }
+                              ],
+                              "outputs": {}
+                            }
+                          }
+                        }
+                      ],
+                      "outputs": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
