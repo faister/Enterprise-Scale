@@ -97,7 +97,7 @@
                   "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
                 ],
                 "deployment": {
-                  "location": "northeurope",
+                  "location": "australiaeast",
                   "properties": {
                     "mode": "incremental",
                     "parameters": {
@@ -109,7 +109,22 @@
                       },
                       "vnet-name": {
                         "value": "[parameters('vnet-name')]"
-                      }                      
+                      },
+                      "vmSku": {
+                        "value": "[parameters('vmSku')]"
+                      },
+                      "ubuntuOSVersion": {
+                        "value": "[parameters('ubuntuOSVersion')]"
+                      },
+                      "adminUsername": {
+                        "value": "[parameters('adminUsername')]"
+                      },
+                      "authenticationType": {
+                        "value": "[parameters('authenticationType')]"
+                      },
+                      "adminPasswordOrKey": {
+                        "value": "[parameters('adminPasswordOrKey')]"
+                      }
                     },
                     "template": {
                       "$schema": "http://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
@@ -123,7 +138,22 @@
                         },
                         "location": {
                           "type": "string"
-                        }
+                        },
+                        "vmSku": {
+                          "type": "string"
+                        },
+                        "ubuntuOSVersion": {
+                          "type": "string"
+                        },
+                        "adminUsername": {
+                          "type": "string"
+                        },
+                        "authenticationType": {
+                          "type": "string"
+                        },
+                        "adminPasswordOrKey": {
+                          "type": "string"
+                        }                        
                       },
                       "variables": {
                         "vwansku": "Standard"
