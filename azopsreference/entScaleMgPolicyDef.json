@@ -13,6 +13,8 @@
             "allowedValues": [
                 "ISM-Control-1384-R2-Audit-Account-Owner-MFA",
                 "ISM-Control-1387-R1-Deploy-Linux-JumpServer",
+                "ISM-Control-1388-R1-Deny-JumpServer-Without-NSGRules",
+                "ISM-Control-1474-R1-Deploy-AzureBastion",
                 "Append Key Vault soft delete",
                 "Deny App GW without WAF",
                 "Deny ER peering",
@@ -107,6 +109,8 @@
         "policyMap": {
             "ISM-Control-1384-R2-Audit-Account-Owner-MFA": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Audit-Account-Owner-MFA.parameters.json')]",
             "ISM-Control-1387-R1-Deploy-Linux-JumpServer": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-Linux-JumpServer.parameters.json')]",
+            "ISM-Control-1388-R1-Deny-JumpServer-Without-NSGRules": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deny-JumpServer-Subnet-Without-NsgRules.parameters.json')]",
+            "ISM-Control-1474-R1-Deploy-AzureBastion": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-AzureBastion.parameters.json')]",
             "Append Key Vault soft delete": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Append-KV-SoftDelete.parameters.json')]",
             "Deny App GW without WAF": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deny-AppGW-Without-WAF.parameters.json')]",
             "Deny ER peering": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deny-ERPeering.parameters.json')]",

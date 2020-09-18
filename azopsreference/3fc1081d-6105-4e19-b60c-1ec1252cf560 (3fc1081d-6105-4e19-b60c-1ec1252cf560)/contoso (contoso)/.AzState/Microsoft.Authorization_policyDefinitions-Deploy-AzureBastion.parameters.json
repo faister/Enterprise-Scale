@@ -1,0 +1,140 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Name": "ISM-Control-1474-R1-Deploy-AzureBastion",
+        "ResourceType": "Microsoft.Authorization/policyDefinitions",
+        "SubscriptionId": null,
+        "Properties": {
+          "Description": "Security Control: 1474; Revision: 1; Updated: Sep-18; Applicability: S, TS; Priority: Must. Management traffic is only allowed to originate from network zones that are used to administer systems and applications.",
+          "DisplayName": "ISM-Control-1474-R1-Deploy-AzureBastion",
+          "Mode": "All",
+          "Parameters": {
+            "rgName": {
+              "type": "String",
+              "metadata": {
+                "displayName": "rgName",
+                "description": "Provide name for resource group which contains the hub VNET and AzureBastionSubnet"
+              }
+            },
+            "location": {
+              "type": "String",
+              "metadata": {
+                "displayName": "location",
+                "description": "Select Azure region for the JumpBox",
+                "strongType": "location"
+              }
+            },
+            "bastion-host-name": {
+              "type": "string",
+              "metadata": {
+                  "description": "Name of Azure Bastion resource"
+              }
+            }
+          },
+          "PolicyRule": {
+            "if": {
+              "allOf": [
+                {
+                  "field": "type",
+                  "equals": "Microsoft.Resources/subscriptions"
+                }
+              ]
+            },
+            "then": {
+              "effect": "deployIfNotExists",
+              "details": {
+                "type": "Microsoft.Network/virtualWans",
+                "deploymentScope": "Subscription",
+                "existenceScope": "ResourceGroup",
+                "name": "[parameters('bastion-host-name')]",
+                "resourceGroupName": "[parameters('rgName')]",
+                "roleDefinitionIds": [
+                  "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+                ],
+                "deployment": {
+                  "location": "australiaeast",
+                  "properties": {
+                    "mode": "incremental",
+                    "parameters": {
+                      "rgName": {
+                        "value": "[parameters('rgName')]"
+                      },
+                      "location": {
+                        "value": "[parameters('location')]"
+                      },
+                      "bastion-host-name": {
+                        "value": "[parameters('bastion-host-name')]"
+                      }
+                    },
+                    "template": {
+                      "$schema": "http://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
+                      "contentVersion": "1.0.0.0",
+                      "parameters": {
+                        "rgName": {
+                          "type": "string"
+                        },
+                        "bastion-host-name": {
+                          "type": "string"
+                        },
+                        "location": {
+                          "type": "string"
+                        }
+                      },
+                      "variables": {
+                        "vwansku": "Standard"
+                      },
+                      "resources": [
+                        {
+                          "type": "Microsoft.Resources/resourceGroups",
+                          "apiVersion": "2018-05-01",
+                          "name": "[parameters('rgName')]",
+                          "location": "[parameters('location')]",
+                          "properties": {}
+                        },
+                        {
+                          "type": "Microsoft.Resources/deployments",
+                          "apiVersion": "2018-05-01",
+                          "name": "ISM-Control-1474-R1-Deploy-AzureBastion",
+                          "resourceGroup": "[parameters('rgName')]",
+                          "dependsOn": [
+                            "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+                          ],
+                          "properties": {
+                            "mode": "Incremental",
+                            "template": {
+                              "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+                              "contentVersion": "1.0.0.0",
+                              "parameters": {},
+                              "resources": [
+                                {
+                                  "type": "Microsoft.Network/virtualWans",
+                                  "apiVersion": "2020-05-01",
+                                  "location": "[parameters('location')]",
+                                  "name": "[parameters('bastion-host-name')]",
+                                  "properties": {
+                                    "virtualHubs": [],
+                                    "vpnSites": [],
+                                    "type": "[variables('vwansku')]"
+                                  }
+                                }
+                              ],
+                              "outputs": {}
+                            }
+                          }
+                        }
+                      ],
+                      "outputs": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

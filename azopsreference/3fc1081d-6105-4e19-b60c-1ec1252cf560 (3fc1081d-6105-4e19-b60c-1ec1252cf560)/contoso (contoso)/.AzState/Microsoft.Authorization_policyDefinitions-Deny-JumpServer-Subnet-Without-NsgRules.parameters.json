@@ -1,0 +1,36 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Name": "ISM-Control-1388-R1-Deny-JumpServer-Without-NSGRules",
+        "ResourceType": "Microsoft.Authorization/policyDefinitions",
+        "SubscriptionId": null,
+        "Properties": {
+          "Description": "Security Control: 1388; Revision: 1; Updated: Sep-18; Applicability: O, P, S, TS; Priority: Must. Jump servers are prevented from communicating to assets and sending and receiving traffic not related to administrative activities.",
+          "DisplayName": "ISM-Control-1388-R1-Deny-JumpServer-Without-NSGRules",
+          "Mode": "All",
+          "Parameters": {},
+          "PolicyRule": {
+            "if": {
+              "allOf": [
+                {
+                  "field": "type",
+                  "equals": "Microsoft.Network/virtualNetworks/subnets"
+                },
+                {
+                  "field": "Microsoft.Network/virtualNetworks/subnets/networkSecurityGroup.id",
+                  "exists": "false"
+                }
+              ]
+            },
+            "then": {
+              "effect": "deny"
+            }
+          }
+        }
+      }
+    }
+  }
+}
