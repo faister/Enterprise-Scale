@@ -171,7 +171,8 @@
                           "resourceGroup": "[parameters('rgName')]",
                           "dependsOn": [
                             "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]",                            
-                            "hub-vnet"
+                            "[resourceId('Microsoft.Network/publicIpAddresses', variables('defaultFwPipName'))]",
+                            "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]"
                           ],
                           "name": "hub-firewall",
                           "properties": {
@@ -184,17 +185,13 @@
                               "resources": [
                                 {
                                   "type": "Microsoft.Network/azureFirewalls",
-                                  "apiVersion": "2019-11-01",
+                                  "apiVersion": "2020-05-01",
                                   "name": "[variables('hubFwName')]",
                                   "location": "[parameters('rgRegion')]",
                                   "zones": [
                                     "1",
                                     "2",
                                     "3"
-                                  ],
-                                  "dependsOn": [
-                                    "[resourceId('Microsoft.Network/publicIpAddresses', variables('defaultFwPipName'))]",
-                                    "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]"
                                   ],
                                   "properties": {
                                     "sku": {
