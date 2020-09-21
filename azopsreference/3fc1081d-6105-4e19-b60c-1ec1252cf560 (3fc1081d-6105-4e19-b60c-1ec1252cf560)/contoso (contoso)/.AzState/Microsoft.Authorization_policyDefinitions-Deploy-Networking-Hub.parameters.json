@@ -145,7 +145,29 @@
                                     "enableDdosProtection": false,
                                     "enableVmProtection": false
                                   }
-                                },
+                                }
+                              ],
+                              "outputs": {}
+                            }
+                          }
+                        },
+                        {
+                          "type": "Microsoft.Resources/deployments",
+                          "apiVersion": "2020-06-01",
+                          "resourceGroup": "[parameters('rgName')]",
+                          "dependsOn": [
+                            "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]",                            
+                            "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]"
+                          ],
+                          "name": "hub-firewall",
+                          "properties": {
+                            "mode": "Incremental",
+                            "template": {
+                              "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                              "contentVersion": "1.0.0.0",
+                              "parameters": {},
+                              "variables": {},
+                              "resources": [
                                 {
                                   "apiVersion": "2019-11-01",
                                   "type": "Microsoft.Network/publicIpAddresses",
@@ -159,30 +181,7 @@
                                     "idleTimeoutInMinutes": 4,
                                     "publicIPAddressVersion": "IPv4"
                                   }
-                                }
-                              ],
-                              "outputs": {}
-                            }
-                          }
-                        },
-                        {
-                          "type": "Microsoft.Resources/deployments",
-                          "apiVersion": "2020-06-01",
-                          "resourceGroup": "[parameters('rgName')]",
-                          "dependsOn": [
-                            "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]",                            
-                            "[resourceId('Microsoft.Network/publicIpAddresses', variables('defaultFwPipName'))]",
-                            "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]"
-                          ],
-                          "name": "hub-firewall",
-                          "properties": {
-                            "mode": "Incremental",
-                            "template": {
-                              "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-                              "contentVersion": "1.0.0.0",
-                              "parameters": {},
-                              "variables": {},
-                              "resources": [
+                                },
                                 {
                                   "type": "Microsoft.Network/azureFirewalls",
                                   "apiVersion": "2020-05-01",
