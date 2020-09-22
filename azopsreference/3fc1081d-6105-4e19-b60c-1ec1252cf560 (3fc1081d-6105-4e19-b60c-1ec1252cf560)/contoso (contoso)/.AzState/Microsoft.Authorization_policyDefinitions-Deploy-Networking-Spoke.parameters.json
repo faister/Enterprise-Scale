@@ -140,7 +140,7 @@
                                           "addressPrefix": "10.240.0.0/22",
                                           "serviceEndpoints": [],
                                           "routeTable": {
-                                            "id": "[resourceId('Microsoft.Network/routeTables', variables('routeTableName'))]"
+                                            "id": "[resourceId(variables('hubRgName'), 'Microsoft.Network/routeTables', variables('routeTableName'))]"
                                           },
                                           "privateEndpointNetworkPolicies": "Disabled",
                                           "privateLinkServiceNetworkPolicies": "Enabled"
@@ -220,7 +220,7 @@
                                           "location": "[reference(parameters('hubVnetResourceId'), '2019-11-01', 'Full').location]",
                                           "properties": {
                                             "remoteVirtualNetwork": {
-                                              "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('clusterVNetName'))]"
+                                              "id": "[resourceId(variables('hubRgName'), 'Microsoft.Network/virtualNetworks', variables('clusterVNetName'))]"
                                             },
                                             "allowForwardedTraffic": false,
                                             "allowGatewayTransit": false,
@@ -252,12 +252,12 @@
                                   "name": "[concat(variables('acrPrivateDnsZonesName'), '/', uniqueString(resourceId('Microsoft.Network/virtualNetworks', variables('clusterVNetName'))))]",
                                   "location": "global",
                                   "dependsOn": [
-                                    "[resourceId('Microsoft.Network/virtualNetworks', variables('clusterVNetName'))]",
-                                    "[resourceId('Microsoft.Network/privateDnsZones', variables('acrPrivateDnsZonesName'))]"
+                                    "[variables('clusterVNetName'))]",
+                                    "[variables('acrPrivateDnsZonesName'))]"
                                   ],
                                   "properties": {
                                     "virtualNetwork": {
-                                      "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('clusterVNetName'))]"
+                                      "id": "[resourceId(variables('hubRgName'), 'Microsoft.Network/virtualNetworks', variables('clusterVNetName'))]"
                                     },
                                     "registrationEnabled": false
                                   }
@@ -273,7 +273,7 @@
                                   ],
                                   "properties": {
                                     "virtualNetwork": {
-                                      "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('clusterVNetName'))]"
+                                      "id": "[resourceId(variables('hubRgName'), 'Microsoft.Network/virtualNetworks', variables('clusterVNetName'))]"
                                     },
                                     "registrationEnabled": false
                                   }
