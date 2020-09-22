@@ -11,6 +11,7 @@
         "policyDefinition": {
             "type": "string",
             "allowedValues": [
+                "Deploy-Networking-Spoke",
                 "ISM-Control-1384-R2-Audit-Account-Owner-MFA",
                 "ISM-Control-1387-R1-Deploy-Linux-JumpServer",
                 "ISM-Control-1388-R1-Deny-JumpServer-Without-NSGRules",
@@ -107,6 +108,7 @@
         "policyUri": "[uri(deployment().properties.templateLink.uri, '3fc1081d-6105-4e19-b60c-1ec1252cf560%20(3fc1081d-6105-4e19-b60c-1ec1252cf560)/contoso%20(contoso)/.AzState/')]",
         "templateUri": "https://raw.githubusercontent.com/Azure/AzOps/main/template/template.json",
         "policyMap": {
+            "Deploy-Networking-Spoke": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-Networking-Spoke.parameters.json')]",
             "ISM-Control-1384-R2-Audit-Account-Owner-MFA": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Audit-Account-Owner-MFA.parameters.json')]",
             "ISM-Control-1387-R1-Deploy-Linux-JumpServer": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-Linux-JumpServer.parameters.json')]",
             "ISM-Control-1388-R1-Deny-JumpServer-Without-NSGRules": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deny-JumpServer-Subnet-Without-NsgRules.parameters.json')]",
