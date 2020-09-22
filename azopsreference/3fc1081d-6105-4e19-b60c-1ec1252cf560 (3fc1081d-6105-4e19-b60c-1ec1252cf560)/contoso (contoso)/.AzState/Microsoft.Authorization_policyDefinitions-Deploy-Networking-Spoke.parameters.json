@@ -125,7 +125,7 @@
                                   "name": "[variables('clusterVNetName')]",
                                   "location": "[parameters('location')]",
                                   "dependsOn": [
-                                    "[resourceId('Microsoft.Network/routeTables', variables('routeTableName'))]"
+                                    "[variables('routeTableName')]"
                                   ],
                                   "properties": {
                                     "addressSpace": {
@@ -168,7 +168,7 @@
                                       "apiVersion": "2019-11-01",
                                       "name": "[concat('spoke-to-', variables('hubNetworkName'))]",
                                       "dependsOn": [
-                                        "[resourceId('Microsoft.Network/virtualNetworks', variables('clusterVNetName'))]"
+                                        "[variables('clusterVNetName')]"
                                       ],
                                       "properties": {
                                         "remoteVirtualNetwork": {
@@ -187,7 +187,7 @@
                                   "apiVersion": "2017-05-01-preview",
                                   "name": "[concat(variables('clusterVNetName'), '/Microsoft.Insights/toHub')]",
                                   "dependsOn": [
-                                    "[resourceId('Microsoft.Network/virtualNetworks', variables('clusterVNetName'))]"
+                                    "[variables('clusterVNetName')]"
                                   ],
                                   "properties": {
                                     "workspaceId": "[resourceId(variables('hubRgName'), 'Microsoft.OperationalInsights/workspaces', concat('la-networking-hub-', reference(parameters('hubVnetResourceId'), '2019-11-01', 'Full').location,'-',uniqueString(parameters('hubVnetResourceId'))))]",
@@ -205,7 +205,7 @@
                                   "apiVersion": "2017-05-10",
                                   "resourceGroup": "[variables('hubRgName')]",
                                   "dependsOn": [
-                                    "[resourceId('Microsoft.Network/virtualNetworks', variables('clusterVNetName'))]"
+                                    "[variables('clusterVNetName')]"
                                   ],
                                   "properties": {
                                     "mode": "Incremental",
@@ -268,8 +268,8 @@
                                   "name": "[concat(variables('akvPrivateDnsZonesName'), '/', uniqueString(resourceId('Microsoft.Network/virtualNetworks', variables('clusterVNetName'))))]",
                                   "location": "global",
                                   "dependsOn": [
-                                    "[resourceId('Microsoft.Network/virtualNetworks', variables('clusterVNetName'))]",
-                                    "[resourceId('Microsoft.Network/privateDnsZones', variables('akvPrivateDnsZonesName'))]"
+                                    "[variables('clusterVNetName')]",
+                                    "[variables('akvPrivateDnsZonesName')]"
                                   ],
                                   "properties": {
                                     "virtualNetwork": {

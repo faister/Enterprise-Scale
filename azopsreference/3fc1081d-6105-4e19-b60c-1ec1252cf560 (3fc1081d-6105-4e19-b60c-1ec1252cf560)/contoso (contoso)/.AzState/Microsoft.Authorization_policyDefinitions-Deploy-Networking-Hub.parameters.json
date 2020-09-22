@@ -69,7 +69,18 @@
                         },
                         "rgRegion": {
                           "type": "string"
-                        }
+                        },
+                        "availabilityZones": {
+                          "type": "array",
+                          "defaultValue": [
+                            "1",
+                            "2",
+                            "3"
+                          ],
+                          "metadata": {
+                            "description": "Zone numbers e.g. 1,2,3."
+                          }
+                        }                        
                       },
                       "variables": {
                         "hubVNetName": "[concat('vnet-', parameters('rgRegion'), '-hub')]",
@@ -157,7 +168,7 @@
                           "resourceGroup": "[parameters('rgName')]",
                           "dependsOn": [
                             "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]",                            
-                            "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]"
+                            "hub-vnet"
                           ],
                           "name": "hub-firewall",
                           "properties": {
@@ -187,31 +198,13 @@
                                   "apiVersion": "2020-05-01",
                                   "name": "[variables('hubFwName')]",
                                   "location": "[parameters('rgRegion')]",
-                                  "zones": [
-                                    "1",
-                                    "2",
-                                    "3"
-                                  ],
+                                  "zones": "[if(equals(length(parameters('availabilityZones')), 0), json('null'), parameters('availabilityZones'))]",
                                   "properties": {
                                     "sku": {
                                       "name": "AZFW_VNet",
                                       "tier": "Standard"
                                     },
                                     "threatIntelMode": "Alert",
-                                    "ipConfigurations": [
-                                      {
-                                        "name": "[variables('defaultFwPipName')]",
-                                        "properties": {
-                                          "subnet": {
-                                            "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('hubVnetName'), 'AzureFirewallSubnet')]"
-                                          },
-                                          "publicIPAddress": {
-                                            "id": "[resourceId('Microsoft.Network/publicIpAddresses', variables('defaultFwPipName'))]"
-                                          }
-                                        }
-                                      }
-                                    ],
-                                    "natRuleCollections": [],
                                     "networkRuleCollections": [
                                       {
                                         "name": "org-wide-allowed",
@@ -271,8 +264,7 @@
                                           ]
                                         }
                                       }
-                                    ],
-                                    "applicationRuleCollections": []
+                                    ]
                                   }
                                 }
                                 
