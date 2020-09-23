@@ -80,6 +80,10 @@
                           "metadata": {
                             "description": "Zone numbers e.g. 1,2,3."
                           }
+                        },
+                        "utcValue": {
+                          "type": "string",
+                          "defaultValue": "[utcNow()]"
                         }                        
                       },
                       "variables": {
@@ -90,7 +94,7 @@
                         "azureBastionSubnetAddressSpace": "10.200.0.96/27",
                         "defaultFwPipName": "[concat('pip-fw-', parameters('rgRegion'), '-default')]",
                         "hubFwName": "[concat('fw-', parameters('rgRegion'), '-hub')]",
-                        "hubLaName": "[concat('la-networking-hub-', parameters('rgRegion'),'-',uniqueString(resourceId('Microsoft.Network/virtualNetworks',variables('hubVnetName'))))]"                        
+                        "hubLaName": "[concat('la-networking-hub-', parameters('rgRegion'),'-',uniqueString(parameters('utcValue')))]"
                       },
                       "resources": [
                         {
@@ -167,7 +171,7 @@
                           "apiVersion": "2020-06-01",
                           "resourceGroup": "[parameters('rgName')]",
                           "dependsOn": [
-                            "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]",                            
+                            "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]",
                             "hub-vnet"
                           ],
                           "name": "hub-firewall",
@@ -199,12 +203,28 @@
                                   "name": "[variables('hubFwName')]",
                                   "location": "[parameters('rgRegion')]",
                                   "zones": "[if(equals(length(parameters('availabilityZones')), 0), json('null'), parameters('availabilityZones'))]",
+                                  "dependsOn": [
+                                    "[variables('defaultFwPipName')]"
+                                  ],
                                   "properties": {
                                     "sku": {
                                       "name": "AZFW_VNet",
                                       "tier": "Standard"
                                     },
                                     "threatIntelMode": "Alert",
+                                    "ipConfigurations": [
+                                      {
+                                        "name": "[variables('defaultFwPipName')]",
+                                        "properties": {
+                                          "subnet": {
+                                            "id": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers','/Microsoft.Network/virtualNetworks/', variables('hubVNetName'),'/subnets/AzureFirewallSubnet')]"
+                                          },
+                                          "publicIPAddress": {
+                                            "id": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers', '/Microsoft.Network/publicIPAddresses/', variables('defaultFwPipName'))]"
+                                          }
+                                        }
+                                      }
+                                    ],
                                     "networkRuleCollections": [
                                       {
                                         "name": "org-wide-allowed",
@@ -266,8 +286,66 @@
                                       }
                                     ]
                                   }
+                                },
+                                {
+                                  "type": "Microsoft.OperationalInsights/workspaces",
+                                  "apiVersion": "2015-11-01-preview",
+                                  "name": "[variables('hubLaName')]",
+                                  "location": "[parameters('rgRegion')]",
+                                  "properties": {
+                                    "sku": {
+                                      "name": "PerGB2018"
+                                    },
+                                    "retentionInDays": 30
+                                  }
+                                },
+                                {
+                                  "type": "Microsoft.Network/azureFirewalls/providers/diagnosticSettings",
+                                  "apiVersion": "2017-05-01-preview",
+                                  "name": "[concat(variables('hubFwName'), '/Microsoft.Insights/default')]",
+                                  "location": "[parameters('rgRegion')]",
+                                  "dependsOn": [
+                                    "[variables('hubLaName')]",
+                                    "[variables('hubFwName')]"
+                                  ],
+                                  "properties": {
+                                    "workspaceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers','/Microsoft.OperationalInsights/workspaces/', variables('hubLaName'))]",
+                                    "logs": [
+                                      {
+                                        "category": "AzureFirewallApplicationRule",
+                                        "enabled": true
+                                      },
+                                      {
+                                        "category": "AzureFirewallNetworkRule",
+                                        "enabled": true
+                                      }
+                                    ],
+                                    "metrics": [
+                                      {
+                                        "category": "AllMetrics",
+                                        "enabled": true
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Microsoft.Network/virtualNetworks/providers/diagnosticSettings",
+                                  "apiVersion": "2017-05-01-preview",
+                                  "name": "[concat(variables('hubVnetName'), '/Microsoft.Insights/default')]",
+                                  "location": "[parameters('rgRegion')]",
+                                  "dependsOn": [
+                                    "[variables('hubLaName')]"
+                                  ],
+                                  "properties": {
+                                    "workspaceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers','/Microsoft.OperationalInsights/workspaces/', variables('hubLaName'))]",
+                                    "metrics": [
+                                      {
+                                        "category": "AllMetrics",
+                                        "enabled": true
+                                      }
+                                    ]
+                                  }
                                 }
-                                
                               ]
                             }
                           }
