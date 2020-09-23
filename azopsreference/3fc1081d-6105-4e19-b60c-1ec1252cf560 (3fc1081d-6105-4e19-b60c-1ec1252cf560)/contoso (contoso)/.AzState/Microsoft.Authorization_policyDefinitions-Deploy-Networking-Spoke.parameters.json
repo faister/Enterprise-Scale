@@ -8,8 +8,8 @@
         "ResourceType": "Microsoft.Authorization/policyDefinitions",
         "SubscriptionId": null,
         "Properties": {
-          "Description": "Deploy-Networking-Spoke",
-          "DisplayName": "Deploy-Networking-Spoke",
+          "Description": "L1.2-Deploy-Networking-Spoke",
+          "DisplayName": "L1.2-Deploy-Networking-Spoke",
           "Mode": "All",
           "Parameters": {
             "hubRgName": {
