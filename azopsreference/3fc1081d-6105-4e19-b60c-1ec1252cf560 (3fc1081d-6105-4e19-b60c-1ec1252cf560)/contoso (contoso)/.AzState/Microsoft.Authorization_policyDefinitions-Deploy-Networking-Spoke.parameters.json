@@ -4,41 +4,54 @@
   "parameters": {
     "input": {
       "value": {
-        "Name": "L1.2-Deploy-Networking-Spoke",
+        "Name": "L2.2-Deploy-Networking-Spoke",
         "ResourceType": "Microsoft.Authorization/policyDefinitions",
         "SubscriptionId": null,
         "Properties": {
-          "Description": "L1.2-Deploy-Networking-Spoke",
-          "DisplayName": "L1.2-Deploy-Networking-Spoke",
+          "Description": "L2.2-Deploy-Networking-Spoke",
+          "DisplayName": "L2.2-Deploy-Networking-Spoke",
           "Mode": "All",
           "Parameters": {
             "hubRgName": {
               "type": "string",
               "metadata": {
-                  "description": "The hub networking resource group name to which the networking spoke would be peering."
+                "displayName": "Hub resource group name",
+                "description": "The hub networking resource group name to which the networking spoke would be peering."
               }
             },
             "hubNetworkName": {
               "type": "string",
               "metadata": {
+                  "displayName": "Hub network name",
                   "description": "The hub vnet name to which the networking spoke would be peering."
               }
             },
             "hubVnetResourceId": {
               "type": "string",
               "metadata": {
+                  "displayName": "Hub vnet resource ID",
                   "description": "The hub vnet resource ID to which the networking spoke would be peering"
               }
-            },            
+            },
+            "spokeRgName": {
+              "type": "string",
+              "metadata": {
+                "displayName": "Spoke resource group name",
+                "description": "The spoke networking resource group name."
+              }
+            },
             "location": {
               "type": "string",
               "metadata": {
-                "description": "The spokes's regional affinity. All resources tied to this spoke will also be homed in this region.  The network team maintains this approved regional list which is a subset of zones with Availability Zone support."
+                "displayName": "Region",                
+                "description": "The spokes's regional affinity. All resources tied to this spoke will also be homed in this region.  The network team maintains this approved regional list which is a subset of zones with Availability Zone support.",
+                "strongType": "location"
               }
             },
             "orgAppId": {
               "type": "string",
               "metadata": {
+                "displayName": "Application ID/Name",
                 "description": "The name of the organization app ID, business unit, which forms the suffix of the resource names in this networking spoke."
               }
             }
@@ -69,7 +82,7 @@
                     },
                     {
                       "field": "name",
-                      "like": "[parameters('hubRgName')]"
+                      "like": "[parameters('spokeRgName')]"
                     }
                   ]
                 },
@@ -88,6 +101,9 @@
                         "value": "[parameters('hubVnetResourceId')]",
                         "defaultValue": []
                       },
+                      "spokeRgName": {
+                        "value": "[parameters('spokeRgName')]"
+                      },                      
                       "location": {
                         "value": "[parameters('location')]",
                         "defaultValue": []
@@ -101,7 +117,24 @@
                       "$schema": "http://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
                       "contentVersion": "1.0.0.0",
                       "parameters": {
-
+                        "hubRgName": {
+                          "type": "string"
+                        },
+                        "hubNetworkName": {
+                          "type": "string"
+                        },
+                        "hubVnetResourceId": {
+                          "type": "string"
+                        },            
+                        "spokeRgName": {
+                          "type": "string"
+                        },
+                        "location": {
+                          "type": "string"
+                        },
+                        "orgAppId": {
+                          "type": "string"
+                        }
                       },
                       "variables": {
                         "clusterVNetName": "[concat('vnet-hub-spoke-', parameters('orgAppId'), '-00')]",
@@ -111,11 +144,20 @@
                       },
                       "resources": [
                         {
+                          "type": "Microsoft.Resources/resourceGroups",
+                          "apiVersion": "2018-05-01",
+                          "name": "[parameters('spokeRgName')]",
+                          "location": "[parameters('location')]",
+                          "properties": {}
+                        },
+                        {
                           "type": "Microsoft.Resources/deployments",
                           "apiVersion": "2020-06-01",
                           "name": "spokevnet",
                           "location": "[parameters('location')]",
-                          "dependsOn": [],
+                          "dependsOn": [
+                            "[resourceId('Microsoft.Resources/resourceGroups/', parameters('spokeRgName'))]"
+                          ],
                           "properties": {
                             "mode": "Incremental",
                             "template": {

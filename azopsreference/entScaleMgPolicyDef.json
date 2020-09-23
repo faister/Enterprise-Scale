@@ -11,7 +11,8 @@
         "policyDefinition": {
             "type": "string",
             "allowedValues": [
-                "L1.2-Deploy-Networking-Spoke",
+                "L2.1-Deploy Networking Hub",
+                "L2.2-Deploy-Networking-Spoke",
                 "ISM-Control-1384-R2-Audit-Account-Owner-MFA",
                 "ISM-Control-1387-R1-Deploy-Linux-JumpServer",
                 "ISM-Control-1388-R1-Deny-JumpServer-Without-NSGRules",
@@ -99,8 +100,7 @@
                 "Deploy Virtual Hub",
                 "Deploy Virtual Network",
                 "Deploy Virtual WAN",
-                "Deploy Windows Domain Join VM extension",
-                "Deploy Networking Hub"
+                "Deploy Windows Domain Join VM extension"
             ]
         }
     },
@@ -108,7 +108,8 @@
         "policyUri": "[uri(deployment().properties.templateLink.uri, '3fc1081d-6105-4e19-b60c-1ec1252cf560%20(3fc1081d-6105-4e19-b60c-1ec1252cf560)/contoso%20(contoso)/.AzState/')]",
         "templateUri": "https://raw.githubusercontent.com/Azure/AzOps/main/template/template.json",
         "policyMap": {
-            "L1.2-Deploy-Networking-Spoke": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-Networking-Spoke.parameters.json')]",
+            "L2.1-Deploy Networking Hub": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-Networking-Hub.parameters.json')]",
+            "L2.2-Deploy-Networking-Spoke": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-Networking-Spoke.parameters.json')]",
             "ISM-Control-1384-R2-Audit-Account-Owner-MFA": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Audit-Account-Owner-MFA.parameters.json')]",
             "ISM-Control-1387-R1-Deploy-Linux-JumpServer": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-Linux-JumpServer.parameters.json')]",
             "ISM-Control-1388-R1-Deny-JumpServer-Without-NSGRules": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deny-JumpServer-Subnet-Without-NsgRules.parameters.json')]",
@@ -201,8 +202,7 @@
             "Deploy Virtual Hub": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-vHUB.parameters.json')]",
             "Deploy Virtual Network": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-vNet.parameters.json')]",
             "Deploy Virtual WAN": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-vWAN.parameters.json')]",
-            "Deploy Windows Domain Join VM extension": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-Windows-DomainJoin.parameters.json')]",
-            "Deploy Networking Hub": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-Networking-Hub.parameters.json')]"
+            "Deploy Windows Domain Join VM extension": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-Windows-DomainJoin.parameters.json')]"
         },
         "policySelection": "[variables('policyMap')[parameters('policyDefinition')]]"
     },
