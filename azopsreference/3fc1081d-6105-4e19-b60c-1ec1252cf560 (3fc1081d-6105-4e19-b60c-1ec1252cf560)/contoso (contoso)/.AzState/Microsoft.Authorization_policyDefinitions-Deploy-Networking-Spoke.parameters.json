@@ -68,24 +68,14 @@
             "then": {
               "effect": "deployIfNotExists",
               "details": {
-                "type": "Microsoft.Resources/resourceGroups",
+                "type": "Microsoft.Network/virtualNetworks",
                 "deploymentScope": "Subscription",
-                "existenceScope": "Subscription",
+                "existenceScope": "ResourceGroup",
+                "name": "[concat('vnet-hub-spoke-', parameters('orgAppId'), '-00')]",
+                "resourceGroupName": "[parameters('spokeRgName')]",
                 "roleDefinitionIds": [
-                  "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+                  "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
                 ],
-                "existenceCondition": {
-                  "allOf": [
-                    {
-                      "field": "type",
-                      "equals": "Microsoft.Resources/subscriptions/resourceGroups"
-                    },
-                    {
-                      "field": "name",
-                      "like": "[parameters('spokeRgName')]"
-                    }
-                  ]
-                },
                 "deployment": {
                   "location": "australiaeast",
                   "properties": {
@@ -205,7 +195,7 @@
                                           "addressPrefix": "10.240.0.0/22",
                                           "serviceEndpoints": [],
                                           "routeTable": {
-                                            "id": "[concat(subscription().id, '/resourceGroups/', parameters('hubRgName'), '/providers/Microsoft.Network/routeTables/', variables('routeTableName'))]"
+                                            "id": "[concat(subscription().id, '/resourceGroups/', parameters('spokeRgName'), '/providers/Microsoft.Network/routeTables/', variables('routeTableName'))]"
                                           },
                                           "privateEndpointNetworkPolicies": "Disabled",
                                           "privateLinkServiceNetworkPolicies": "Enabled"
@@ -255,7 +245,7 @@
                                     "[concat('Microsoft.Network/virtualNetworks/', variables('clusterVNetName'))]"
                                   ],
                                   "properties": {
-                                    "workspaceId": "[concat(subscription().id, '/resourceGroups/', parameters('hubRgName'), '/providers/Microsoft.OperationalInsights/workspaces', concat('la-networking-hub-', reference(parameters('hubVnetResourceId'), '2019-11-01', 'Full').location,'-',uniqueString(parameters('hubVnetResourceId'))))]",
+                                    "workspaceId": "[concat(subscription().id, '/resourceGroups/', parameters('hubRgName'), '/providers/Microsoft.OperationalInsights/workspaces/', concat('la-networking-hub-', reference(parameters('hubVnetResourceId'), '2019-11-01', 'Full').location,'-',uniqueString(parameters('hubVnetResourceId'))))]",
                                     "metrics": [
                                       {
                                         "category": "AllMetrics",
@@ -285,7 +275,7 @@
                                           "location": "[reference(parameters('hubVnetResourceId'), '2019-11-01', 'Full').location]",
                                           "properties": {
                                             "remoteVirtualNetwork": {
-                                              "id": "[concat(subscription().id, '/resourceGroups/', parameters('hubRgName'), '/providers/Microsoft.Network/virtualNetworks/', variables('clusterVNetName'))]"
+                                              "id": "[concat(subscription().id, '/resourceGroups/', parameters('spokeRgName'), '/providers/Microsoft.Network/virtualNetworks/', variables('clusterVNetName'))]"
                                             },
                                             "allowForwardedTraffic": false,
                                             "allowGatewayTransit": false,
@@ -322,7 +312,7 @@
                                   ],
                                   "properties": {
                                     "virtualNetwork": {
-                                      "id": "[concat(subscription().id, '/resourceGroups/', parameters('hubRgName'), '/providers/Microsoft.Network/virtualNetworks/', variables('clusterVNetName'))]"
+                                      "id": "[concat(subscription().id, '/resourceGroups/', parameters('spokeRgName'), '/providers/Microsoft.Network/virtualNetworks/', variables('clusterVNetName'))]"
                                     },
                                     "registrationEnabled": false
                                   }
@@ -338,7 +328,7 @@
                                   ],
                                   "properties": {
                                     "virtualNetwork": {
-                                      "id": "[concat(subscription().id, '/resourceGroups/', parameters('hubRgName'), '/providers/Microsoft.Network/virtualNetworks', variables('clusterVNetName'))]"
+                                      "id": "[concat(subscription().id, '/resourceGroups/', parameters('spokeRgName'), '/providers/Microsoft.Network/virtualNetworks/', variables('clusterVNetName'))]"
                                     },
                                     "registrationEnabled": false
                                   }

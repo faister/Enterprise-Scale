@@ -80,11 +80,7 @@
                           "metadata": {
                             "description": "Zone numbers e.g. 1,2,3."
                           }
-                        },
-                        "utcValue": {
-                          "type": "string",
-                          "defaultValue": "[utcNow()]"
-                        }                        
+                        }
                       },
                       "variables": {
                         "hubVNetName": "[concat('vnet-', parameters('rgRegion'), '-hub')]",
@@ -94,7 +90,7 @@
                         "azureBastionSubnetAddressSpace": "10.200.0.96/27",
                         "defaultFwPipName": "[concat('pip-fw-', parameters('rgRegion'), '-default')]",
                         "hubFwName": "[concat('fw-', parameters('rgRegion'), '-hub')]",
-                        "hubLaName": "[concat('la-networking-hub-', parameters('rgRegion'),'-',uniqueString(parameters('utcValue')))]"
+                        "hubLaName": "[concat('la-networking-hub-', parameters('rgRegion'),'-',uniqueString(concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Network/virtualNetworks/', variables('hubVNetName')) ))]"
                       },
                       "resources": [
                         {

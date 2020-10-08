@@ -8,8 +8,8 @@
         "ResourceType": "Microsoft.Authorization/policyDefinitions",
         "SubscriptionId": null,
         "Properties": {
-          "Description": "Security Control: 1474; Revision: 1; Updated: Sep-18; Applicability: S, TS; Priority: Must. Management traffic is only allowed to originate from network zones that are used to administer systems and applications.",
-          "DisplayName": "ISM-Control-1474-R1-Deploy-AzureBastion",
+          "Description": "Security Control: 1386; Revision: 4; Updated: Oct-19; Applicability: O, P, S, TS; Management traffic is only allowed to originate from network zones that are used to administer systems and applications.",
+          "DisplayName": "ISM-Control-1386-R4-ManagementTraffic-Deploy-AzureBastion",
           "Mode": "All",
           "Parameters": {
             "rgName": {
@@ -97,7 +97,7 @@
                         {
                           "type": "Microsoft.Resources/deployments",
                           "apiVersion": "2018-05-01",
-                          "name": "ISM-Control-1474-R1-Deploy-AzureBastion",
+                          "name": "ISM-Control-1386-R4-ManagementTraffic-Deploy-AzureBastion",
                           "resourceGroup": "[parameters('rgName')]",
                           "dependsOn": [
                             "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
