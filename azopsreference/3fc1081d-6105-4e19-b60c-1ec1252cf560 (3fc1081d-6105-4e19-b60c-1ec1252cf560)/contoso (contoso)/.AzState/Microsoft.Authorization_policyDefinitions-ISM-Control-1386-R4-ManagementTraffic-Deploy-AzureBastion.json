@@ -1,0 +1,150 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Name": "ISM-Control-1386-R4-ManagementTraffic-Deploy-AzureBastion",
+        "ResourceType": "Microsoft.Authorization/policyDefinitions",
+        "SubscriptionId": null,
+        "Properties": {
+          "Description": "Security Control: 1386; Revision: 4; Updated: Oct-19; Applicability: O, P, S, TS; Management traffic is only allowed to originate from network zones that are used to administer systems and applications.",
+          "DisplayName": "ISM-Control-1386-R4-ManagementTraffic-Deploy-AzureBastion",
+          "Mode": "All",
+          "Parameters": {
+            "rgName": {
+              "type": "String",
+              "metadata": {
+                "displayName": "rgName",
+                "description": "Provide name for resource group which contains the hub VNET and AzureBastionSubnet"
+              }
+            },
+            "location": {
+              "type": "String",
+              "metadata": {
+                "displayName": "location",
+                "description": "Select Azure region for the Azure Bastion",
+                "strongType": "location"
+              }
+            },
+            "bastion-host-name": {
+              "type": "string",
+              "metadata": {
+                  "description": "Name of Azure Bastion resource"
+              }
+            }
+          },
+          "PolicyRule": {
+            "if": {
+              "allOf": [
+                {
+                  "field": "type",
+                  "equals": "Microsoft.Resources/subscriptions"
+                }
+              ]
+            },
+            "then": {
+              "effect": "deployIfNotExists",
+              "details": {
+                "type": "Microsoft.Resources/resourceGroups",
+                "deploymentScope": "Subscription",
+                "existenceScope": "Subscription",
+                "roleDefinitionIds": [
+                  "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+                ],
+                "existenceCondition": {
+                  "allOf": [
+                    {
+                      "field": "type",
+                      "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+                    },
+                    {
+                      "field": "name",
+                      "like": "[parameters('rgName')]"
+                    }
+                  ]
+                },
+                "deployment": {
+                  "location": "australiaeast",
+                  "properties": {
+                    "mode": "incremental",
+                    "parameters": {
+                      "rgName": {
+                        "value": "[parameters('rgName')]"
+                      },
+                      "location": {
+                        "value": "[parameters('location')]"
+                      },
+                      "bastion-host-name": {
+                        "value": "[parameters('bastion-host-name')]"
+                      }
+                    },
+                    "template": {
+                      "$schema": "http://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
+                      "contentVersion": "1.0.0.0",
+                      "parameters": {
+                        "rgName": {
+                          "type": "string"
+                        },
+                        "bastion-host-name": {
+                          "type": "string"
+                        },
+                        "location": {
+                          "type": "string"
+                        }
+                      },
+                      "variables": {
+                        "vwansku": "Standard"
+                      },
+                      "resources": [
+                        {
+                          "type": "Microsoft.Resources/resourceGroups",
+                          "apiVersion": "2018-05-01",
+                          "name": "[parameters('rgName')]",
+                          "location": "[parameters('location')]",
+                          "properties": {}
+                        },
+                        {
+                          "type": "Microsoft.Resources/deployments",
+                          "apiVersion": "2018-05-01",
+                          "name": "ISM-Control-1386-R4-ManagementTraffic-Deploy-AzureBastion",
+                          "resourceGroup": "[parameters('rgName')]",
+                          "dependsOn": [
+                            "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+                          ],
+                          "properties": {
+                            "mode": "Incremental",
+                            "template": {
+                              "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+                              "contentVersion": "1.0.0.0",
+                              "parameters": {},
+                              "resources": [
+                                {
+                                  "type": "Microsoft.Network/virtualWans",
+                                  "apiVersion": "2020-05-01",
+                                  "location": "[parameters('location')]",
+                                  "name": "[parameters('bastion-host-name')]",
+                                  "properties": {
+                                    "virtualHubs": [],
+                                    "vpnSites": [],
+                                    "type": "[variables('vwansku')]"
+                                  }
+                                }
+                              ],
+                              "outputs": {}
+                            }
+                          }
+                        }
+                      ],
+                      "outputs": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
