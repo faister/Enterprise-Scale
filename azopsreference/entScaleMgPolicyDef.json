@@ -11,6 +11,7 @@
         "policyDefinition": {
             "type": "string",
             "allowedValues": [
+                "L3.1-Deploy-SQLIaaSExtension",                
                 "L2.1-Deploy Networking Hub",
                 "L2.2-Deploy-Networking-Spoke",
                 "ISM-Control-1384-R2-Audit-Account-Owner-MFA",
@@ -109,6 +110,7 @@
         "policyUri": "[uri(deployment().properties.templateLink.uri, '3fc1081d-6105-4e19-b60c-1ec1252cf560%20(3fc1081d-6105-4e19-b60c-1ec1252cf560)/contoso%20(contoso)/.AzState/')]",
         "templateUri": "https://raw.githubusercontent.com/Azure/AzOps/main/template/template.json",
         "policyMap": {
+            "L3.1-Deploy-SQLIaaSExtension": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-SQLIaaSExtension.parameters.json')]",
             "L2.1-Deploy Networking Hub": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-Networking-Hub.parameters.json')]",
             "L2.2-Deploy-Networking-Spoke": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Deploy-Networking-Spoke.parameters.json')]",
             "ISM-Control-1384-R2-Audit-Account-Owner-MFA": "[concat(variables('policyUri'), 'Microsoft.Authorization_policyDefinitions-Audit-Account-Owner-MFA.parameters.json')]",
