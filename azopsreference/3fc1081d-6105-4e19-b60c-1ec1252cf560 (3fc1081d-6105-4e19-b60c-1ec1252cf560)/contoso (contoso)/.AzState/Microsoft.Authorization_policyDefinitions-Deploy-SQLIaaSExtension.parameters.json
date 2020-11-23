@@ -37,33 +37,48 @@
           },
           "PolicyRule": {
             "if": {
-              "field": "type",
-              "equals": "Microsoft.Compute/virtualMachines"
+              "allOf": [
+                {
+                  "field": "type",
+                  "equals": "Microsoft.Compute/virtualMachines"
+                }
+              ]
             },
             "then": {
               "effect": "deployIfNotExists",
               "details": {
                 "type": "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
-                "name": "setByPolicy"
-              },
-              "roleDefinitionIds": [
-                "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+                "name": "setByPolicy",
+                "roleDefinitionIds": [
+                  "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
               ],
               "deployment": {
+                "location": "australiaeast",                  
                 "properties": {
                   "mode": "incremental",
+                  "parameters": {
+                    "vmName": {
+                      "value": "[parameters('vmName')]"
+                    },
+                    "rgName": {
+                      "value": "[parameters('rgName')]"
+                    },
+                    "location": {
+                      "value": "[parameters('location')]"
+                    }
+                  },
                   "template": {
                     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
                     "contentVersion": "1.0.0.0",
                     "parameters": {
                       "vmName": {
-                        "value": "[parameters('vmName')]"
+                        "type": "string"
                       },
                       "rgName": {
-                        "value": "[parameters('rgName')]"
+                        "type": "string"
                       },
                       "location": {
-                        "value": "[parameters('location')]"
+                        "type": "string"
                       }
                     },
                     "variables": {},
@@ -81,8 +96,7 @@
                       }
                     ],
                     "outputs": {}
-                  },
-                  "parameters": {}
+                  }
                 }
               }
             }
