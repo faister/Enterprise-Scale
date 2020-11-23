@@ -21,14 +21,14 @@
               "rgName": {
                 "type": "String",
                 "metadata": {
-                  "displayName": "rgName",
+                  "displayName": "Resource Group name",
                   "description": "Provide name for resource group."
                 }
               },
               "location": {
                 "type": "String",
                 "metadata": {
-                  "displayName": "location",
+                  "displayName": "Location",
                   "description": "Select Azure region for the single VM",
                   "strongType": "location"
                 }
@@ -57,13 +57,13 @@
                       "contentVersion": "1.0.0.0",
                       "parameters": {
                         "vmName": {
-                          "type": "string"
+                          "value": "[parameters('vmName')]"
                         },
                         "rgName": {
-                          "type": "string"
+                          "value": "[parameters('rgName')]"
                         },
                         "location": {
-                          "type": "string"
+                          "value": "[parameters('location')]"
                         }
                       },
                       "variables": {},
