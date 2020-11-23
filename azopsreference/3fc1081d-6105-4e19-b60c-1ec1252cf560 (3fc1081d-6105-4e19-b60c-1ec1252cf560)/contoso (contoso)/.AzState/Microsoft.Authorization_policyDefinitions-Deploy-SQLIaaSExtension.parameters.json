@@ -1,0 +1,96 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Name": "Deploy-SQLIaasExtension",
+        "ResourceType": "Microsoft.Authorization/policyDefinitions",
+        "SubscriptionId": null,
+        "Properties": {
+          "Description": "Deploy SQL Iaas Extension for Virtual Machines",
+          "DisplayName": "Deploy-SQLIaasExtension",
+          "Mode": "All",
+          "Parameters": {
+            "vmName": {
+              "type": "String",
+              "metadata": {
+                "displayName": "Single Virtual Machine name",
+                "description": "Enter Single VM name which has SQL IaaS installed"
+              },
+              "rgName": {
+                "type": "String",
+                "metadata": {
+                  "displayName": "rgName",
+                  "description": "Provide name for resource group."
+                }
+              },
+              "location": {
+                "type": "String",
+                "metadata": {
+                  "displayName": "location",
+                  "description": "Select Azure region for the single VM",
+                  "strongType": "location"
+                }
+              }              
+            }
+          },
+          "PolicyRule": {
+            "if": {
+              "field": "type",
+              "equals": "Microsoft.Compute/virtualMachines"
+            },
+            "then": {
+              "effect": "deployIfNotExists",
+              "details": {
+                "type": "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
+                "name": "setByPolicy"
+                },
+                "roleDefinitionIds": [
+                  "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+                ],
+                "deployment": {
+                  "properties": {
+                    "mode": "incremental",
+                    "template": {
+                      "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                      "contentVersion": "1.0.0.0",
+                      "parameters": {
+                        "vmName": {
+                          "type": "string"
+                        },
+                        "rgName": {
+                          "type": "string"
+                        },
+                        "location": {
+                          "type": "string"
+                        }
+                      },
+                      "variables": {},
+                      "resources": [
+                        {
+                          "type": "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
+                          "apiVersion": "2017-03-01-preview",
+                          "name": "[parameters('vmName')]",
+                          "location": "[parameters('location')]",
+                          "properties": {
+                            "virtualMachineResourceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers','/Microsoft.Compute/virtualMachines/', parameters('vmName'))]",
+                            "sqlManagement": "Lightweight",
+                            "SqlServerLicenseType": "PAYG"
+                          }
+                        }
+                      ],
+                      "outputs": {}
+                    },
+                    "parameters": {
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
