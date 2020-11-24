@@ -51,51 +51,52 @@
                 "name": "setByPolicy",
                 "roleDefinitionIds": [
                   "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
-              ],
-              "deployment": {
-                "location": "australiaeast",                  
-                "properties": {
-                  "mode": "incremental",
-                  "parameters": {
-                    "vmName": {
-                      "value": "[parameters('vmName')]"
-                    },
-                    "rgName": {
-                      "value": "[parameters('rgName')]"
-                    },
-                    "location": {
-                      "value": "[parameters('location')]"
-                    }
-                  },
-                  "template": {
-                    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                    "contentVersion": "1.0.0.0",
+                ],
+                "deployment": {
+                  "location": "australiaeast",
+                  "properties": {
+                    "mode": "incremental",
                     "parameters": {
                       "vmName": {
-                        "type": "string"
+                        "value": "[parameters('vmName')]"
                       },
                       "rgName": {
-                        "type": "string"
+                        "value": "[parameters('rgName')]"
                       },
                       "location": {
-                        "type": "string"
+                        "value": "[parameters('location')]"
                       }
                     },
-                    "variables": {},
-                    "resources": [
-                      {
-                        "type": "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
-                        "apiVersion": "2017-03-01-preview",
-                        "name": "[parameters('vmName')]",
-                        "location": "[parameters('location')]",
-                        "properties": {
-                          "virtualMachineResourceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers','/Microsoft.Compute/virtualMachines/', parameters('vmName'))]",
-                          "sqlManagement": "Lightweight",
-                          "SqlServerLicenseType": "PAYG"
+                    "template": {
+                      "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                      "contentVersion": "1.0.0.0",
+                      "parameters": {
+                        "vmName": {
+                          "type": "string"
+                        },
+                        "rgName": {
+                          "type": "string"
+                        },
+                        "location": {
+                          "type": "string"
                         }
-                      }
-                    ],
-                    "outputs": {}
+                      },
+                      "variables": {},
+                      "resources": [
+                        {
+                          "type": "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
+                          "apiVersion": "2017-03-01-preview",
+                          "name": "[parameters('vmName')]",
+                          "location": "[parameters('location')]",
+                          "properties": {
+                            "virtualMachineResourceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers','/Microsoft.Compute/virtualMachines/', parameters('vmName'))]",
+                            "sqlManagement": "Lightweight",
+                            "SqlServerLicenseType": "PAYG"
+                          }
+                        }
+                      ],
+                      "outputs": {}
+                    }
                   }
                 }
               }
