@@ -4,77 +4,59 @@
   "parameters": {
     "input": {
       "value": {
-        "Name": "Deploy-SQLIaasExtension",
+        "Name": "Deploy-SQLIaaSExtension",
         "ResourceType": "Microsoft.Authorization/policyDefinitions",
         "SubscriptionId": null,
         "Properties": {
-          "Description": "Deploy SQL Iaas Extension for Virtual Machines",
-          "DisplayName": "Deploy-SQLIaasExtension",
+          "Description": "Deploy SQL IaaS Extension",
+          "DisplayName": "Deploy-SQLIaaSExtension",
           "Mode": "All",
           "Parameters": {
-            "vmName": {
+            "logAnalytics": {
               "type": "String",
               "metadata": {
-                "displayName": "Single Virtual Machine name",
-                "description": "Enter Single VM name which has SQL IaaS installed"
-              }
-            },
-            "rgName": {
-              "type": "String",
-              "metadata": {
-                "displayName": "Resource Group name",
-                "description": "Provide name for resource group."
-              }
-            },
-            "location": {
-              "type": "String",
-              "metadata": {
-                "displayName": "Location",
-                "description": "Select Azure region for the single VM",
-                "strongType": "location"
+                "displayName": "Log Analytics workspace",
+                "description": "Select the Log Analytics workspace from dropdown list",
+                "strongType": "omsWorkspace"
               }
             }
           },
           "PolicyRule": {
             "if": {
-              "allOf": [
-                {
-                  "field": "type",
-                  "equals": "Microsoft.Compute/virtualMachines"
-                }
-              ]
+              "field": "type",
+              "equals": "Microsoft.Compute/virtualMachines"
             },
             "then": {
               "effect": "deployIfNotExists",
               "details": {
-                "type": "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
+                "type": "Microsoft.Insights/diagnosticSettings",
                 "name": "setByPolicy",
+                "existenceCondition": {
+                  "allOf": [
+                    {
+                      "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
+                      "equals": "true"
+                    },
+                    {
+                      "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
+                      "equals": "[parameters('logAnalytics')]"
+                    }
+                  ]
+                },
                 "roleDefinitionIds": [
                   "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
                 ],
                 "deployment": {
-                  "location": "australiaeast",
                   "properties": {
                     "mode": "incremental",
-                    "parameters": {
-                      "vmName": {
-                        "value": "[parameters('vmName')]"
-                      },
-                      "rgName": {
-                        "value": "[parameters('rgName')]"
-                      },
-                      "location": {
-                        "value": "[parameters('location')]"
-                      }
-                    },
                     "template": {
                       "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
                       "contentVersion": "1.0.0.0",
                       "parameters": {
-                        "vmName": {
+                        "resourceName": {
                           "type": "string"
                         },
-                        "rgName": {
+                        "logAnalytics": {
                           "type": "string"
                         },
                         "location": {
@@ -84,18 +66,50 @@
                       "variables": {},
                       "resources": [
                         {
+                          "type": "Microsoft.Compute/virtualMachines/providers/diagnosticSettings",
+                          "apiVersion": "2017-05-01-preview",
+                          "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                          "location": "[parameters('location')]",
+                          "dependsOn": [],
+                          "properties": {
+                            "workspaceId": "[parameters('logAnalytics')]",
+                            "metrics": [
+                              {
+                                "category": "AllMetrics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                  "enabled": false,
+                                  "days": 0
+                                }
+                              }
+                            ],
+                            "logs": []
+                          }
+                        },
+                        {
                           "type": "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
                           "apiVersion": "2017-03-01-preview",
-                          "name": "[parameters('vmName')]",
+                          "name": "[parameters('resourceName')]",
                           "location": "[parameters('location')]",
                           "properties": {
-                            "virtualMachineResourceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers','/Microsoft.Compute/virtualMachines/', parameters('vmName'))]",
+                            "virtualMachineResourceId": "[concat(subscription().id, '/resourceGroups/rg-sqliaasext', '/providers','/Microsoft.Compute/virtualMachines/', parameters('resourceName'))]",
                             "sqlManagement": "Lightweight",
                             "SqlServerLicenseType": "PAYG"
                           }
-                        }
+                        }                        
                       ],
                       "outputs": {}
+                    },
+                    "parameters": {
+                      "logAnalytics": {
+                        "value": "[parameters('logAnalytics')]"
+                      },
+                      "location": {
+                        "value": "[field('location')]"
+                      },
+                      "resourceName": {
+                        "value": "[field('name')]"
+                      }
                     }
                   }
                 }
