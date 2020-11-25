@@ -21,11 +21,11 @@
               "effect": "deployIfNotExists",
               "details": {
                 "type": "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
-                "name": "setByPolicy",
+                "name": "[field('name')]",
                 "existenceCondition": {
                   "allOf": [
                     {
-                      "field": "Microsoft.SqlVirtualMachine/SqlVirtualMachines/provisioningState",
+                      "field": "Microsoft.SqlVirtualMachine/sqlVirtualMachines/provisioningState",
                       "equals": "Succeeded"
                     }
                   ]
