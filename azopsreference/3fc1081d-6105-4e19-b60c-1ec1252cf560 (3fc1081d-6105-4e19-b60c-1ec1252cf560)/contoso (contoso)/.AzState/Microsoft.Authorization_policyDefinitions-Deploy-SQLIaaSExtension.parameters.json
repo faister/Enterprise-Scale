@@ -11,16 +11,7 @@
           "Description": "Deploy SQL IaaS Extension",
           "DisplayName": "Deploy-SQLIaaSExtension",
           "Mode": "All",
-          "Parameters": {
-            "logAnalytics": {
-              "type": "String",
-              "metadata": {
-                "displayName": "Log Analytics workspace",
-                "description": "Select the Log Analytics workspace from dropdown list",
-                "strongType": "omsWorkspace"
-              }
-            }
-          },
+          "Parameters": { },
           "PolicyRule": {
             "if": {
               "field": "type",
@@ -29,17 +20,13 @@
             "then": {
               "effect": "deployIfNotExists",
               "details": {
-                "type": "Microsoft.Insights/diagnosticSettings",
+                "type": "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
                 "name": "setByPolicy",
                 "existenceCondition": {
                   "allOf": [
                     {
-                      "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                      "equals": "true"
-                    },
-                    {
-                      "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
-                      "equals": "[parameters('logAnalytics')]"
+                      "field": "Microsoft.SqlVirtualMachine/SqlVirtualMachines/provisioningState",
+                      "equals": "Succeeded"
                     }
                   ]
                 },
@@ -49,14 +36,19 @@
                 "deployment": {
                   "properties": {
                     "mode": "incremental",
+                    "parameters": {
+                      "location": {
+                        "value": "[field('location')]"
+                      },
+                      "resourceName": {
+                        "value": "[field('name')]"
+                      }
+                    },                    
                     "template": {
                       "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
                       "contentVersion": "1.0.0.0",
                       "parameters": {
                         "resourceName": {
-                          "type": "string"
-                        },
-                        "logAnalytics": {
                           "type": "string"
                         },
                         "location": {
@@ -65,27 +57,6 @@
                       },
                       "variables": {},
                       "resources": [
-                        {
-                          "type": "Microsoft.Compute/virtualMachines/providers/diagnosticSettings",
-                          "apiVersion": "2017-05-01-preview",
-                          "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/setByPolicy')]",
-                          "location": "[parameters('location')]",
-                          "dependsOn": [],
-                          "properties": {
-                            "workspaceId": "[parameters('logAnalytics')]",
-                            "metrics": [
-                              {
-                                "category": "AllMetrics",
-                                "enabled": true,
-                                "retentionPolicy": {
-                                  "enabled": false,
-                                  "days": 0
-                                }
-                              }
-                            ],
-                            "logs": []
-                          }
-                        },
                         {
                           "type": "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
                           "apiVersion": "2017-03-01-preview",
@@ -99,17 +70,6 @@
                         }                        
                       ],
                       "outputs": {}
-                    },
-                    "parameters": {
-                      "logAnalytics": {
-                        "value": "[parameters('logAnalytics')]"
-                      },
-                      "location": {
-                        "value": "[field('location')]"
-                      },
-                      "resourceName": {
-                        "value": "[field('name')]"
-                      }
                     }
                   }
                 }
