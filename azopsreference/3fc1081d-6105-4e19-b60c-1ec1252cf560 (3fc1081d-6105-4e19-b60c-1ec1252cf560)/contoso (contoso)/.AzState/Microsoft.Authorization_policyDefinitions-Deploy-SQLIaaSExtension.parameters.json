@@ -28,17 +28,9 @@
                   "equals": "Microsoft.Compute/virtualMachines"
                 },
                 {
-                  "anyOf": [
-                    {
-                      "field": "[concat('tags[', parameters('tagName'), ']')]",
-                      "exists": true
-                    },
-                    {
-                      "field": "[concat('tags[', parameters('tagName'), ']')]",
-                      "equals": "true"
-                    }
-                  ]
-                }
+                  "field": "[concat('tags[', parameters('tagName'), ']')]",
+                  "equals": "true"
+                }                
               ]
             },
             "then": {
