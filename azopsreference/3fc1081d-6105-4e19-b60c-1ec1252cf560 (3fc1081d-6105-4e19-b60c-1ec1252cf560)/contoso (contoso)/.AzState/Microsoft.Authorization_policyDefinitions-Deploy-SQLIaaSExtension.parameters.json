@@ -17,7 +17,8 @@
               "metadata": {
                 "displayName": "SQL VM Tag Name",
                 "description": "Name of the tag to identify SQL IaaS VMs, such as 'isSqlVM'"
-              }            
+              }
+            }      
           },
           "PolicyRule": {
             "if": {
