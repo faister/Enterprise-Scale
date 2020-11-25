@@ -4,18 +4,41 @@
   "parameters": {
     "input": {
       "value": {
-        "Name": "Deploy-SQLIaaSExtension",
+        "Name": "Deploy-SQLIaaSExtension-For-AHUB",
         "ResourceType": "Microsoft.Authorization/policyDefinitions",
         "SubscriptionId": null,
         "Properties": {
-          "Description": "Deploy SQL IaaS Extension",
-          "DisplayName": "Deploy-SQLIaaSExtension",
+          "Description": "Deploy SQL IaaS Extension to enable SQL Server VMs with the Azure Hybrid Benefit",
+          "DisplayName": "Deploy-SQLIaaSExtension-For-AHUB",
           "Mode": "All",
-          "Parameters": { },
+          "Parameters": { 
+            "tagName": {
+              "type": "String",
+              "metadata": {
+                "displayName": "SQL VM Tag Name",
+                "description": "Name of the tag to identify SQL IaaS VMs, such as 'isSqlVM'"
+              }            
+          },
           "PolicyRule": {
             "if": {
-              "field": "type",
-              "equals": "Microsoft.Compute/virtualMachines"
+              "allOf": [
+                {
+                  "field": "type",
+                  "equals": "Microsoft.Compute/virtualMachines"
+                },
+                {
+                  "anyOf": [
+                    {
+                      "field": "[concat('tags[', parameters('tagName'), ']')]",
+                      "exists": true
+                    },
+                    {
+                      "field": "[concat('tags[', parameters('tagName'), ']')]",
+                      "equals": "true"
+                    }
+                  ]
+                }
+              ]
             },
             "then": {
               "effect": "deployIfNotExists",
