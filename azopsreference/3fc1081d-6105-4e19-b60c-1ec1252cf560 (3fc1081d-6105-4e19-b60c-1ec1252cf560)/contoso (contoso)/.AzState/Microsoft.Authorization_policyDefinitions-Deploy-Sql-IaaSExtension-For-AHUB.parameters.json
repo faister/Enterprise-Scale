@@ -4,19 +4,19 @@
   "parameters": {
     "input": {
       "value": {
-        "Name": "Deploy-SQLIaaSExtension-For-AHUB",
+        "Name": "Deploy-Sql-IaaSExtension-For-AHUB",
         "ResourceType": "Microsoft.Authorization/policyDefinitions",
         "SubscriptionId": null,
         "Properties": {
           "Description": "Deploy SQL IaaS Extension to enable SQL Server VMs with the Azure Hybrid Benefit",
-          "DisplayName": "Deploy-SQLIaaSExtension-For-AHUB",
+          "DisplayName": "Deploy-Sql-IaaSExtension-For-AHUB",
           "Mode": "All",
           "Parameters": { 
             "tagName": {
               "type": "String",
               "metadata": {
                 "displayName": "SQL VM Tag Name",
-                "description": "Name of the tag to identify SQL IaaS VMs, such as isSqlVM"
+                "description": "Name of the tag that you use to identify SQL IaaS VMs to which Azure Hybrid Benefit will be applied, i.e., isSqlVM"
               }
             }      
           },
@@ -53,12 +53,15 @@
                   "properties": {
                     "mode": "incremental",
                     "parameters": {
-                      "location": {
-                        "value": "[field('location')]"
-                      },
                       "resourceName": {
                         "value": "[field('name')]"
-                      }
+                      },
+                      "resourceId": {
+                        "value": "[field('id')]"
+                      },
+                      "location": {
+                        "value": "[field('location')]"
+                      }                      
                     },                    
                     "template": {
                       "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
@@ -67,11 +70,16 @@
                         "resourceName": {
                           "type": "string"
                         },
+                        "resourceId": {
+                          "type": "string"
+                        },                        
                         "location": {
                           "type": "string"
                         }
                       },
-                      "variables": {},
+                      "variables": {
+                        "rgName": "[split(parameters('resourceId'),'/')[4]]"
+                      },
                       "resources": [
                         {
                           "type": "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
@@ -79,9 +87,9 @@
                           "name": "[parameters('resourceName')]",
                           "location": "[parameters('location')]",
                           "properties": {
-                            "virtualMachineResourceId": "[concat(subscription().id, '/resourceGroups/rg-sqliaasext', '/providers','/Microsoft.Compute/virtualMachines/', parameters('resourceName'))]",
-                            "sqlManagement": "Lightweight",
-                            "SqlServerLicenseType": "PAYG"
+                            "virtualMachineResourceId": "[concat(subscription().id, '/resourceGroups/', variables('rgName'), '/providers','/Microsoft.Compute/virtualMachines/', parameters('resourceName'))]",
+                            "sqlManagement": "Full",
+                            "SqlServerLicenseType": "AHUB"
                           }
                         }                        
                       ],
