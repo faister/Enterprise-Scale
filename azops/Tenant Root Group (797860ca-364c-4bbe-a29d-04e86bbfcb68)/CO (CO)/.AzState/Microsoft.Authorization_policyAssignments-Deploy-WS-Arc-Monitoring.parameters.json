@@ -18,7 +18,7 @@
           "NotScopes": null,
           "Parameters": {
             "logAnalytics": {
-              "value": "/subscriptions/fc1ca138-b8e5-430f-b1ff-70280970554a/resourcegroups/co-mgmt/providers/microsoft.operationalinsights/workspaces/co-la-fc1ca138-b8e5-430f-b1ff-70280970554a"
+              "value": "/subscriptions/4bc2619f-89ae-48c2-be8a-0f8af42fca87/resourcegroups/co-mgmt/providers/microsoft.operationalinsights/workspaces/co-la-4bc2619f-89ae-48c2-be8a-0f8af42fca87"
             }
           },
           "PolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/69af7d4a-7b18-4044-93a9-2651498ef203",

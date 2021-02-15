@@ -18,7 +18,7 @@
           "NotScopes": null,
           "Parameters": {
             "automationAccountName": {
-              "value": "CO-a-fc1ca138-b8e5-430f-b1ff-70280970554a"
+              "value": "CO-a-4bc2619f-89ae-48c2-be8a-0f8af42fca87"
             },
             "automationRegion": {
               "value": "australiaeast"
@@ -30,7 +30,7 @@
               "value": "CO-mgmt"
             },
             "workspaceName": {
-              "value": "CO-la-fc1ca138-b8e5-430f-b1ff-70280970554a"
+              "value": "CO-la-4bc2619f-89ae-48c2-be8a-0f8af42fca87"
             },
             "workspaceRegion": {
               "value": "australiaeast"

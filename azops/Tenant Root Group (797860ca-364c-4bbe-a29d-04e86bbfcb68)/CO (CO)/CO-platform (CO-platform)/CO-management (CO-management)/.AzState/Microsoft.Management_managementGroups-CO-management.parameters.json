@@ -17,9 +17,9 @@
         "Children": [
           {
             "Type": "/subscriptions",
-            "Id": "/subscriptions/fc1ca138-b8e5-430f-b1ff-70280970554a",
-            "Name": "fc1ca138-b8e5-430f-b1ff-70280970554a",
-            "DisplayName": "VS Ultimate with MSDN - MPN",
+            "Id": "/subscriptions/4bc2619f-89ae-48c2-be8a-0f8af42fca87",
+            "Name": "4bc2619f-89ae-48c2-be8a-0f8af42fca87",
+            "DisplayName": "Visual Studio Ultimate with MSDN",
             "Children": null
           }
         ]
