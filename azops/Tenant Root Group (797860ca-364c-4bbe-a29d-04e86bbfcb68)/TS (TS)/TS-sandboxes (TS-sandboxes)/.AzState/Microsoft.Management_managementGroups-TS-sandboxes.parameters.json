@@ -1,0 +1,21 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Id": "/providers/Microsoft.Management/managementGroups/TS-sandboxes",
+        "Type": "/providers/Microsoft.Management/managementGroups",
+        "Name": "TS-sandboxes",
+        "TenantId": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+        "DisplayName": "TS-sandboxes",
+        "UpdatedTime": "2020-12-08T03:41:47.9045197Z",
+        "UpdatedBy": "dc923914-bab4-40da-a479-36bd8b77c482",
+        "ParentId": "/providers/Microsoft.Management/managementGroups/TS",
+        "ParentName": "TS",
+        "ParentDisplayName": "TS",
+        "Children": null
+      }
+    }
+  }
+}

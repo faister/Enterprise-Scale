@@ -1,0 +1,21 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Id": "/providers/Microsoft.Management/managementGroups/ESAW-online",
+        "Type": "/providers/Microsoft.Management/managementGroups",
+        "Name": "ESAW-online",
+        "TenantId": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+        "DisplayName": "ESAW-online",
+        "UpdatedTime": "2020-11-17T02:19:15.3525641Z",
+        "UpdatedBy": "dc923914-bab4-40da-a479-36bd8b77c482",
+        "ParentId": "/providers/Microsoft.Management/managementGroups/ESAW-landingzones",
+        "ParentName": "ESAW-landingzones",
+        "ParentDisplayName": "ESAW-landingzones",
+        "Children": null
+      }
+    }
+  }
+}

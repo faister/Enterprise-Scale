@@ -1,0 +1,40 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Identity": {
+          "principalId": "9c388649-72fa-4ed2-a928-3b92b3ccb587",
+          "tenantId": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+          "type": "SystemAssigned"
+        },
+        "Location": "australiaeast",
+        "Name": "Deploy-Sql-IaaSExtension",
+        "PolicyAssignmentId": "/providers/Microsoft.Management/managementGroups/ESAW-corp/providers/Microsoft.Authorization/policyAssignments/Deploy-Sql-IaaSExtension",
+        "Properties": {
+          "Description": "Deploy-Sql-IaaSExtension",
+          "DisplayName": "Deploy-Sql-IaaSExtension",
+          "NotScopes": null,
+          "Parameters": {
+            "sqlManagement": {
+              "value": "Lightweight"
+            },
+            "tagName": {
+              "value": "sqlvm"
+            }
+          },
+          "PolicyDefinitionId": "/providers/Microsoft.Management/managementGroups/ESAW/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-IaaSExtension-For-AHUB",
+          "Scope": "/providers/Microsoft.Management/managementGroups/ESAW-corp"
+        },
+        "ResourceId": "/providers/Microsoft.Management/managementGroups/ESAW-corp/providers/Microsoft.Authorization/policyAssignments/Deploy-Sql-IaaSExtension",
+        "ResourceName": "Deploy-Sql-IaaSExtension",
+        "ResourceType": "Microsoft.Authorization/policyAssignments",
+        "Sku": {
+          "name": "A0",
+          "tier": "Free"
+        }
+      }
+    }
+  }
+}

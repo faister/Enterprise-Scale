@@ -1,0 +1,15 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Type": "/subscriptions",
+        "Id": "/subscriptions/4bc2619f-89ae-48c2-be8a-0f8af42fca87",
+        "Name": "4bc2619f-89ae-48c2-be8a-0f8af42fca87",
+        "DisplayName": "Visual Studio Ultimate with MSDN",
+        "Children": null
+      }
+    }
+  }
+}

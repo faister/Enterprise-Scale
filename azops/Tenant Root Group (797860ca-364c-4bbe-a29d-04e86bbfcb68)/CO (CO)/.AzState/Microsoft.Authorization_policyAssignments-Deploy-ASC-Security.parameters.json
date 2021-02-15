@@ -1,0 +1,61 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Identity": {
+          "principalId": "97c6d80f-850c-4678-9b4f-cb35f1aa0071",
+          "tenantId": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+          "type": "SystemAssigned"
+        },
+        "Location": "australiaeast",
+        "Name": "Deploy-ASC-Security",
+        "PolicyAssignmentId": "/providers/Microsoft.Management/managementGroups/CO/providers/Microsoft.Authorization/policyAssignments/Deploy-ASC-Security",
+        "Properties": {
+          "Description": "Deploy-ASC-Defender",
+          "DisplayName": "Deploy-ASC-Defender",
+          "NotScopes": null,
+          "Parameters": {
+            "pricingTierAppServices": {
+              "value": "Standard"
+            },
+            "pricingTierArm": {
+              "value": "Standard"
+            },
+            "pricingTierContainerRegistry": {
+              "value": "Standard"
+            },
+            "pricingTierDns": {
+              "value": "Standard"
+            },
+            "pricingTierKeyVaults": {
+              "value": "Standard"
+            },
+            "pricingTierKubernetesService": {
+              "value": "Standard"
+            },
+            "pricingTierSqlServers": {
+              "value": "Standard"
+            },
+            "pricingTierStorageAccounts": {
+              "value": "Standard"
+            },
+            "pricingTierVms": {
+              "value": "Standard"
+            }
+          },
+          "PolicyDefinitionId": "/providers/Microsoft.Management/managementGroups/CO/providers/Microsoft.Authorization/policyDefinitions/Deploy-ASC-Standard",
+          "Scope": "/providers/Microsoft.Management/managementGroups/CO"
+        },
+        "ResourceId": "/providers/Microsoft.Management/managementGroups/CO/providers/Microsoft.Authorization/policyAssignments/Deploy-ASC-Security",
+        "ResourceName": "Deploy-ASC-Security",
+        "ResourceType": "Microsoft.Authorization/policyAssignments",
+        "Sku": {
+          "name": "A0",
+          "tier": "Free"
+        }
+      }
+    }
+  }
+}

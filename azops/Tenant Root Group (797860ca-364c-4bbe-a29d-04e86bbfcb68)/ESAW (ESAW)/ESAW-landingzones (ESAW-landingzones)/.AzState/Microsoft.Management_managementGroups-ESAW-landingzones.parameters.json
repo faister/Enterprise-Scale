@@ -1,0 +1,36 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Id": "/providers/Microsoft.Management/managementGroups/ESAW-landingzones",
+        "Type": "/providers/Microsoft.Management/managementGroups",
+        "Name": "ESAW-landingzones",
+        "TenantId": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+        "DisplayName": "ESAW-landingzones",
+        "UpdatedTime": "2020-11-17T02:18:39.1545491Z",
+        "UpdatedBy": "dc923914-bab4-40da-a479-36bd8b77c482",
+        "ParentId": "/providers/Microsoft.Management/managementGroups/ESAW",
+        "ParentName": "ESAW",
+        "ParentDisplayName": "ESAW",
+        "Children": [
+          {
+            "Type": "/providers/Microsoft.Management/managementGroups",
+            "Id": "/providers/Microsoft.Management/managementGroups/ESAW-online",
+            "Name": "ESAW-online",
+            "DisplayName": "ESAW-online",
+            "Children": null
+          },
+          {
+            "Type": "/providers/Microsoft.Management/managementGroups",
+            "Id": "/providers/Microsoft.Management/managementGroups/ESAW-corp",
+            "Name": "ESAW-corp",
+            "DisplayName": "ESAW-corp",
+            "Children": null
+          }
+        ]
+      }
+    }
+  }
+}
