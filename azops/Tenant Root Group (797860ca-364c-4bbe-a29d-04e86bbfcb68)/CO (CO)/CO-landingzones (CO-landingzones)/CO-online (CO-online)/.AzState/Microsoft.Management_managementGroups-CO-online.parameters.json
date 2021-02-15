@@ -14,7 +14,15 @@
         "ParentId": "/providers/Microsoft.Management/managementGroups/CO-landingzones",
         "ParentName": "CO-landingzones",
         "ParentDisplayName": "CO-landingzones",
-        "Children": null
+        "Children": [
+          {
+            "Type": "/subscriptions",
+            "Id": "/subscriptions/3f7d427f-3c52-4a7b-a477-2767283bd6f8",
+            "Name": "3f7d427f-3c52-4a7b-a477-2767283bd6f8",
+            "DisplayName": "Free Trial",
+            "Children": null
+          }
+        ]
       }
     }
   }

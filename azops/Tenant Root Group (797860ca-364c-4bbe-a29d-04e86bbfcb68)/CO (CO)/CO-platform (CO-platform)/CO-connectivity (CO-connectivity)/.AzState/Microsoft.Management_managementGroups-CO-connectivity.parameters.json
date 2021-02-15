@@ -14,7 +14,15 @@
         "ParentId": "/providers/Microsoft.Management/managementGroups/CO-platform",
         "ParentName": "CO-platform",
         "ParentDisplayName": "CO-platform",
-        "Children": null
+        "Children": [
+          {
+            "Type": "/subscriptions",
+            "Id": "/subscriptions/fc1ca138-b8e5-430f-b1ff-70280970554a",
+            "Name": "fc1ca138-b8e5-430f-b1ff-70280970554a",
+            "DisplayName": "VS Ultimate with MSDN - MPN",
+            "Children": null
+          }
+        ]
       }
     }
   }
