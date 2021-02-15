@@ -1,0 +1,36 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Id": "/providers/Microsoft.Management/managementGroups/TS-landingzones",
+        "Type": "/providers/Microsoft.Management/managementGroups",
+        "Name": "TS-landingzones",
+        "TenantId": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+        "DisplayName": "TS-landingzones",
+        "UpdatedTime": "2020-12-08T03:41:50.3961954Z",
+        "UpdatedBy": "dc923914-bab4-40da-a479-36bd8b77c482",
+        "ParentId": "/providers/Microsoft.Management/managementGroups/TS",
+        "ParentName": "TS",
+        "ParentDisplayName": "TS",
+        "Children": [
+          {
+            "Type": "/providers/Microsoft.Management/managementGroups",
+            "Id": "/providers/Microsoft.Management/managementGroups/TS-online",
+            "Name": "TS-online",
+            "DisplayName": "TS-online",
+            "Children": null
+          },
+          {
+            "Type": "/providers/Microsoft.Management/managementGroups",
+            "Id": "/providers/Microsoft.Management/managementGroups/TS-corp",
+            "Name": "TS-corp",
+            "DisplayName": "TS-corp",
+            "Children": null
+          }
+        ]
+      }
+    }
+  }
+}

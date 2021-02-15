@@ -1,0 +1,37 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Identity": {
+          "principalId": "fa3f3a2d-ff88-417f-8b5e-f44f0edf800b",
+          "tenantId": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+          "type": "SystemAssigned"
+        },
+        "Location": "australiaeast",
+        "Name": "Deploy-Resource-Diag",
+        "PolicyAssignmentId": "/providers/Microsoft.Management/managementGroups/ESAW/providers/Microsoft.Authorization/policyAssignments/Deploy-Resource-Diag",
+        "Properties": {
+          "Description": "Deploy-Resource-Diag",
+          "DisplayName": "Deploy-Resource-Diag",
+          "NotScopes": null,
+          "Parameters": {
+            "logAnalytics": {
+              "value": "/subscriptions/fc1ca138-b8e5-430f-b1ff-70280970554a/resourcegroups/esaw-mgmt/providers/microsoft.operationalinsights/workspaces/esaw-la-fc1ca138-b8e5-430f-b1ff-70280970554a"
+            }
+          },
+          "PolicyDefinitionId": "/providers/Microsoft.Management/managementGroups/ESAW/providers/Microsoft.Authorization/policySetDefinitions/Deploy-Diag-LogAnalytics",
+          "Scope": "/providers/Microsoft.Management/managementGroups/ESAW"
+        },
+        "ResourceId": "/providers/Microsoft.Management/managementGroups/ESAW/providers/Microsoft.Authorization/policyAssignments/Deploy-Resource-Diag",
+        "ResourceName": "Deploy-Resource-Diag",
+        "ResourceType": "Microsoft.Authorization/policyAssignments",
+        "Sku": {
+          "name": "A0",
+          "tier": "Free"
+        }
+      }
+    }
+  }
+}

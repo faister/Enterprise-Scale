@@ -1,0 +1,50 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Id": "/providers/Microsoft.Management/managementGroups/ESAW",
+        "Type": "/providers/Microsoft.Management/managementGroups",
+        "Name": "ESAW",
+        "TenantId": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+        "DisplayName": "ESAW",
+        "UpdatedTime": "2020-11-17T02:17:55.7425927Z",
+        "UpdatedBy": "dc923914-bab4-40da-a479-36bd8b77c482",
+        "ParentId": "/providers/Microsoft.Management/managementGroups/797860ca-364c-4bbe-a29d-04e86bbfcb68",
+        "ParentName": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+        "ParentDisplayName": "Tenant Root Group",
+        "Children": [
+          {
+            "Type": "/providers/Microsoft.Management/managementGroups",
+            "Id": "/providers/Microsoft.Management/managementGroups/ESAW-platform",
+            "Name": "ESAW-platform",
+            "DisplayName": "ESAW-platform",
+            "Children": null
+          },
+          {
+            "Type": "/providers/Microsoft.Management/managementGroups",
+            "Id": "/providers/Microsoft.Management/managementGroups/ESAW-landingzones",
+            "Name": "ESAW-landingzones",
+            "DisplayName": "ESAW-landingzones",
+            "Children": null
+          },
+          {
+            "Type": "/providers/Microsoft.Management/managementGroups",
+            "Id": "/providers/Microsoft.Management/managementGroups/ESAW-decommissioned",
+            "Name": "ESAW-decommissioned",
+            "DisplayName": "ESAW-decommissioned",
+            "Children": null
+          },
+          {
+            "Type": "/providers/Microsoft.Management/managementGroups",
+            "Id": "/providers/Microsoft.Management/managementGroups/ESAW-sandboxes",
+            "Name": "ESAW-sandboxes",
+            "DisplayName": "ESAW-sandboxes",
+            "Children": null
+          }
+        ]
+      }
+    }
+  }
+}
