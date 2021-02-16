@@ -67,7 +67,7 @@
                   ]
                 },
                 "deployment": {
-                  "location": "northeurope",
+                  "location": "australiaeast",
                   "properties": {
                     "mode": "incremental",
                     "parameters": {
@@ -83,8 +83,8 @@
                         "ipam": {
                           "defaultValue": [
                             {
-                              "name": "bu1-weu-msx3-vNet1",
-                              "location": "westeurope",
+                              "name": "bu1-aue-msx3-vNet1",
+                              "location": "australiaeast",
                               "virtualNetworks": {
                                 "properties": {
                                   "addressSpace": {
@@ -105,7 +105,7 @@
                                 }
                               },
                               "hubVirtualNetworkConnection": {
-                                "vWanVhubResourceId": "/subscriptions/99c2838f-a548-4884-a6e2-38c1f8fb4c0b/resourceGroups/contoso-global-vwan/providers/Microsoft.Network/virtualHubs/contoso-vhub-weu",
+                                "vWanVhubResourceId": "/subscriptions/fc1ca138-b8e5-430f-b1ff-70280970554a/resourceGroups/CO-connectivity/providers/Microsoft.Network/virtualHubs/CO-vhub-australiaeast",
                                 "properties": {
                                   "allowHubToRemoteVnetTransit": true,
                                   "allowRemoteVnetToUseHubVnetGateways": false,
