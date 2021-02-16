@@ -1,0 +1,69 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Identity": {
+          "principalId": "a7b87cd5-43c9-4cf6-875d-8eff8085c8e9",
+          "tenantId": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+          "type": "SystemAssigned"
+        },
+        "Location": "australiaeast",
+        "Name": "d3bf85223fdd422fbdf0b658",
+        "PolicyAssignmentId": "/providers/Microsoft.Management/managementGroups/CO-online/providers/Microsoft.Authorization/policyAssignments/d3bf85223fdd422fbdf0b658",
+        "Properties": {
+          "Description": null,
+          "DisplayName": "Deploy spoke network with configuration to hub network based on ipam configuration object",
+          "NotScopes": null,
+          "Parameters": {
+            "ipam": {
+              "value": [
+                {
+                  "name": "bu1-aue-msx3-vNet1",
+                  "location": "australiaeast",
+                  "virtualNetworks": {
+                    "properties": {
+                      "addressSpace": {
+                        "addressPrefixes": [
+                          "10.51.217.0/24"
+                        ]
+                      }
+                    }
+                  },
+                  "networkSecurityGroups": {
+                    "properties": {
+                      "securityRules": []
+                    }
+                  },
+                  "routeTables": {
+                    "properties": {
+                      "routes": []
+                    }
+                  },
+                  "hubVirtualNetworkConnection": {
+                    "vWanVhubResourceId": "/subscriptions/fc1ca138-b8e5-430f-b1ff-70280970554a/resourceGroups/CO-connectivity/providers/Microsoft.Network/virtualHubs/CO-vhub-australiaeast",
+                    "properties": {
+                      "allowHubToRemoteVnetTransit": true,
+                      "allowRemoteVnetToUseHubVnetGateways": false,
+                      "enableInternetSecurity": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "PolicyDefinitionId": "/providers/Microsoft.Management/managementGroups/CO/providers/Microsoft.Authorization/policyDefinitions/Deploy-vNet",
+          "Scope": "/providers/Microsoft.Management/managementGroups/CO-online"
+        },
+        "ResourceId": "/providers/Microsoft.Management/managementGroups/CO-online/providers/Microsoft.Authorization/policyAssignments/d3bf85223fdd422fbdf0b658",
+        "ResourceName": "d3bf85223fdd422fbdf0b658",
+        "ResourceType": "Microsoft.Authorization/policyAssignments",
+        "Sku": {
+          "name": "A0",
+          "tier": "Free"
+        }
+      }
+    }
+  }
+}
