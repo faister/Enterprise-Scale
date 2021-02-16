@@ -1,0 +1,33 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Identity": {
+          "principalId": "df81d0d3-c465-468b-bdcc-91ead8aab723",
+          "tenantId": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+          "type": "SystemAssigned"
+        },
+        "Location": "australiaeast",
+        "Name": "95af88e08cca46d491211e80",
+        "PolicyAssignmentId": "/providers/Microsoft.Management/managementGroups/CO-online/providers/Microsoft.Authorization/policyAssignments/95af88e08cca46d491211e80",
+        "Properties": {
+          "Description": null,
+          "DisplayName": "Deploy spoke network with configuration to hub network based on ipam configuration object",
+          "NotScopes": null,
+          "Parameters": {},
+          "PolicyDefinitionId": "/providers/Microsoft.Management/managementGroups/CO/providers/Microsoft.Authorization/policyDefinitions/Deploy-vNet",
+          "Scope": "/providers/Microsoft.Management/managementGroups/CO-online"
+        },
+        "ResourceId": "/providers/Microsoft.Management/managementGroups/CO-online/providers/Microsoft.Authorization/policyAssignments/95af88e08cca46d491211e80",
+        "ResourceName": "95af88e08cca46d491211e80",
+        "ResourceType": "Microsoft.Authorization/policyAssignments",
+        "Sku": {
+          "name": "A0",
+          "tier": "Free"
+        }
+      }
+    }
+  }
+}
