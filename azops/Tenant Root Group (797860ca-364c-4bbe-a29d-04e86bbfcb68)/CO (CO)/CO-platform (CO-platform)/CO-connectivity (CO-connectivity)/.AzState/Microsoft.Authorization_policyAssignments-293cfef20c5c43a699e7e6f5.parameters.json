@@ -1,0 +1,43 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Identity": {
+          "principalId": "3f8046a0-0a96-458c-9f3a-c1697d430e3a",
+          "tenantId": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+          "type": "SystemAssigned"
+        },
+        "Location": "australiaeast",
+        "Name": "293cfef20c5c43a699e7e6f5",
+        "PolicyAssignmentId": "/providers/Microsoft.Management/managementGroups/CO-connectivity/providers/Microsoft.Authorization/policyAssignments/293cfef20c5c43a699e7e6f5",
+        "Properties": {
+          "Description": null,
+          "DisplayName": "Deploy the Virtual WAN in the specific region",
+          "NotScopes": null,
+          "Parameters": {
+            "rgName": {
+              "value": "CO-connectivity"
+            },
+            "vwanname": {
+              "value": "CO-vhub-australiaeast"
+            },
+            "vwanRegion": {
+              "value": "australiaeast"
+            }
+          },
+          "PolicyDefinitionId": "/providers/Microsoft.Management/managementGroups/CO/providers/Microsoft.Authorization/policyDefinitions/Deploy-vWAN",
+          "Scope": "/providers/Microsoft.Management/managementGroups/CO-connectivity"
+        },
+        "ResourceId": "/providers/Microsoft.Management/managementGroups/CO-connectivity/providers/Microsoft.Authorization/policyAssignments/293cfef20c5c43a699e7e6f5",
+        "ResourceName": "293cfef20c5c43a699e7e6f5",
+        "ResourceType": "Microsoft.Authorization/policyAssignments",
+        "Sku": {
+          "name": "A0",
+          "tier": "Free"
+        }
+      }
+    }
+  }
+}
