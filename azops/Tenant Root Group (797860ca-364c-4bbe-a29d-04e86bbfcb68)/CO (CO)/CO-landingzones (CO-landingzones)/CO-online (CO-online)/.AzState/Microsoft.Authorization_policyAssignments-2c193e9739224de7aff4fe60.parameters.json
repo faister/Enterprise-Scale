@@ -1,0 +1,49 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "input": {
+      "value": {
+        "Identity": {
+          "principalId": "95deb870-365b-4bcd-8f6c-78e99ace2091",
+          "tenantId": "797860ca-364c-4bbe-a29d-04e86bbfcb68",
+          "type": "SystemAssigned"
+        },
+        "Location": "australiaeast",
+        "Name": "2c193e9739224de7aff4fe60",
+        "PolicyAssignmentId": "/providers/Microsoft.Management/managementGroups/CO-online/providers/Microsoft.Authorization/policyAssignments/2c193e9739224de7aff4fe60",
+        "Properties": {
+          "Description": null,
+          "DisplayName": "Deploys virtual network peering to hub",
+          "NotScopes": null,
+          "Parameters": {
+            "hubResourceId": {
+              "value": "/subscriptions/fc1ca138-b8e5-430f-b1ff-70280970554a/resourceGroups/CO-connectivity/providers/Microsoft.Network/virtualHubs/CO-vhub-australiaeast"
+            },
+            "vNetCidrRange": {
+              "value": "10.0.1.0/24"
+            },
+            "vNetLocation": {
+              "value": "australiaeast"
+            },
+            "vNetName": {
+              "value": "lz-online-spoke-vnet"
+            },
+            "vNetRgName": {
+              "value": "rg-lz-online-network"
+            }
+          },
+          "PolicyDefinitionId": "/providers/Microsoft.Management/managementGroups/CO/providers/Microsoft.Authorization/policyDefinitions/Deploy-VNET-HubSpoke",
+          "Scope": "/providers/Microsoft.Management/managementGroups/CO-online"
+        },
+        "ResourceId": "/providers/Microsoft.Management/managementGroups/CO-online/providers/Microsoft.Authorization/policyAssignments/2c193e9739224de7aff4fe60",
+        "ResourceName": "2c193e9739224de7aff4fe60",
+        "ResourceType": "Microsoft.Authorization/policyAssignments",
+        "Sku": {
+          "name": "A0",
+          "tier": "Free"
+        }
+      }
+    }
+  }
+}

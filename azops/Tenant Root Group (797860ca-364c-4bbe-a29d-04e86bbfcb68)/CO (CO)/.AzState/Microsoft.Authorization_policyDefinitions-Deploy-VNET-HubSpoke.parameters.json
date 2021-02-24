@@ -84,7 +84,7 @@
                   ]
                 },
                 "deployment": {
-                  "location": "northeurope",
+                  "location": "australiaeast",
                   "properties": {
                     "mode": "incremental",
                     "parameters": {
