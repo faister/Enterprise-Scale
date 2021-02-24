@@ -97,7 +97,7 @@
                               }
                             },
                             "hubVirtualNetworkConnection": {
-                              "vWanVhubResourceId": "/subscriptions/fc1ca138-b8e5-430f-b1ff-70280970554a/resourceGroups/CO-connectivity/providers/Microsoft.Network/virtualHubs/CO-vhub-australiaeast",
+                              "vWanVhubResourceId": "/subscriptions/fc1ca138-b8e5-430f-b1ff-70280970554a/resourceGroups/CO-connectivity/providers/Microsoft.Network/virtualWans/CO-vhub-australiaeast",
                               "properties": {
                                 "allowHubToRemoteVnetTransit": true,
                                 "allowRemoteVnetToUseHubVnetGateways": false,
