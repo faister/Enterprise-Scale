@@ -312,14 +312,6 @@
             ],
             "defaultValue": "Yes"
         },
-        "enableAntiMalware": {
-            "type": "string",
-            "allowedValues": [
-                "Yes",
-                "No"
-            ],
-            "defaultValue": "Yes"
-        },
         "enableVmInsights": {
             "type": "string",
             "allowedValues": [
@@ -456,6 +448,14 @@
             ],
             "defaultValue": "No"
         },
+        "enableAzFwDnsProxy": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
         "enableDdoS": {
             "type": "string",
             "defaultValue": "No",
@@ -463,14 +463,6 @@
                 "Yes",
                 "No"
             ]
-        },
-        "vpnGwType": {
-            "type": "string",
-            "allowedValues": [
-                "PolicyBased",
-                "RouteBased"
-            ],
-            "defaultValue": "RouteBased"
         },
         "subnetMaskForAzFw": {
             "type": "string",
@@ -480,9 +472,29 @@
             "type": "string",
             "defaultValue": ""
         },
-        "vpnOrErZones": {
-            "type": "array",
-            "defaultValue": []
+        "gwRegionalOrAz": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "gwAzSku": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "gwRegionalSku": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "erRegionalOrAz": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "erAzSku": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "erRegionalSku": {
+            "type": "string",
+            "defaultValue": ""
         },
         "firewallZones": {
             "type": "array",
@@ -730,7 +742,7 @@
             }
         },
         {
-            "condition": "[and(not(empty(parameters('managementSubscriptionId'))), or(or(or(or(or(equals(parameters('enableSecuritySolution'), 'Yes'), equals(parameters('enableAgentHealth'), 'Yes')), equals(parameters('enableChangeTracking'), 'Yes')), equals(parameters('enableUpdateMgmt'), 'Yes'), equals(parameters('enableActivityLog'), 'Yes')), equals(parameters('enableAntiMalware'), 'Yes'), equals(parameters('enableVmInsights'), 'Yes')), equals(parameters('enableServiceMap'), 'Yes'), equals(parameters('enableSqlAssessment'), 'Yes')))]",
+            "condition": "[and(not(empty(parameters('managementSubscriptionId'))), or(or(or(or(or(equals(parameters('enableSecuritySolution'), 'Yes'), equals(parameters('enableAgentHealth'), 'Yes')), equals(parameters('enableChangeTracking'), 'Yes')), equals(parameters('enableUpdateMgmt'), 'Yes'), equals(parameters('enableActivityLog'), 'Yes')), equals(parameters('enableVmInsights'), 'Yes')), equals(parameters('enableServiceMap'), 'Yes'), equals(parameters('enableSqlAssessment'), 'Yes')))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-05-01",
             "subscriptionId": "[parameters('managementSubscriptionId')]",
@@ -766,9 +778,6 @@
                     },
                     "enableActivityLog": {
                         "value": "[parameters('enableActivityLog')]"
-                    },
-                    "enableAntiMalware": {
-                        "value": "[parameters('enableAntiMalware')]"
                     },
                     "enableVmInsights": {
                         "value": "[parameters('enableVmInsights')]"
@@ -1034,20 +1043,35 @@
                     "connectivitySubscriptionId": {
                         "value": "[parameters('connectivitySubscriptionId')]"
                     },
-                    "vpnGwType": {
-                        "value": "[parameters('vpnGwType')]"
-                    },
                     "subnetMaskForAzFw": {
                         "value": "[parameters('subnetMaskForAzFw')]"
                     },
                     "subnetMaskForGw": {
                         "value": "[parameters('subnetMaskForGw')]"
                     },
-                    "vpnOrErZones": {
-                        "value": "[parameters('vpnOrErZones')]"
-                    },
                     "firewallZones": {
                         "value": "[parameters('firewallZones')]"
+                    },
+                    "enableAzFwDnsProxy": {
+                        "value": "[parameters('enableAzFwDnsProxy')]"
+                    },
+                    "gwRegionalOrAz": {
+                        "value": "[parameters('gwRegionalOrAz')]"
+                    },
+                    "gwAzSku": {
+                        "value": "[parameters('gwAzSku')]"
+                    },
+                    "gwRegionalSku": {
+                        "value": "[parameters('gwRegionalSku')]"
+                    },
+                    "erRegionalOrAz": {
+                        "value": "[parameters('erRegionalOrAz')]"
+                    },
+                    "erAzSku": {
+                        "value": "[parameters('erAzSku')]"
+                    },
+                    "erRegionalSku": {
+                        "value": "[parameters('erRegionalSku')]"
                     }
                 }
             }
